@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mulher de Fé — Devocional 365</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<!-- FIREBASE SDK -->
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-app-compat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-auth-compat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-firestore-compat.min.js"></script>
+
+
+
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAF7F2;--linen:#F2EBE0;--sand:#E8DDD0;--taupe:#C9B99A;
+  --mocha:#A0845C;--bark:#7D5A3C;--espresso:#4A3728;--warm:#FFFDF9;
+  --nude:#DDD0BC;--td:#3A2E24;--tm:#7A6450;--tl:#A89880;
+  --accent:#C4956A;--asoft:#F0E4D4;--green:#5D8A5E;--greenl:#F0F7F0;
+}
+html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);color:var(--td)}
+
+/* ===================== LOGIN SCREEN ===================== */
+#login-screen{
+  display:flex;min-height:100vh;
+}
+.login-left{
+  flex:1;background:var(--espresso);display:flex;flex-direction:column;
+  justify-content:center;align-items:center;padding:60px 48px;position:relative;overflow:hidden;
+}
+.login-left::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,0.015) 40px,rgba(255,255,255,0.015) 42px);
+}
+.login-left::after{
+  content:'';position:absolute;bottom:-80px;right:-80px;
+  width:320px;height:320px;border-radius:50%;
+  border:60px solid rgba(201,185,154,0.07);
+}
+.ll-inner{position:relative;z-index:1;text-align:center;max-width:360px}
+.ll-orn{color:var(--taupe);letter-spacing:10px;font-size:16px;display:block;margin-bottom:16px}
+.ll-title{font-family:'Playfair Display',serif;font-size:38px;color:var(--warm);font-weight:400;line-height:1.2;margin-bottom:6px}
+.ll-title em{color:var(--taupe);font-style:italic}
+.ll-sub{font-size:12px;color:var(--taupe);letter-spacing:3px;text-transform:uppercase;margin-bottom:40px}
+.ll-verse{font-family:'Playfair Display',serif;font-size:15px;color:rgba(201,185,154,0.7);font-style:italic;line-height:1.7;border-left:2px solid rgba(201,185,154,0.3);padding-left:16px;text-align:left;margin-bottom:8px}
+.ll-ref{font-size:11px;color:rgba(201,185,154,0.5);letter-spacing:1px;padding-left:18px}
+.ll-dots{display:flex;gap:6px;justify-content:center;margin-top:40px}
+.ll-dot{width:6px;height:6px;border-radius:50%;background:rgba(201,185,154,0.25)}
+.ll-dot.a{background:var(--taupe)}
+
+.login-right{
+  width:480px;flex-shrink:0;background:var(--warm);display:flex;flex-direction:column;
+  justify-content:center;padding:60px 52px;
+}
+.lr-welcome{font-size:12px;color:var(--tl);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.lr-title{font-family:'Playfair Display',serif;font-size:28px;color:var(--espresso);margin-bottom:6px}
+.lr-sub{font-size:14px;color:var(--tm);margin-bottom:36px;line-height:1.6}
+
+.form-group{margin-bottom:20px}
+.form-label{font-size:11px;color:var(--tm);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:8px}
+.form-input{
+  width:100%;padding:13px 16px;border:1px solid var(--sand);border-radius:8px;
+  background:var(--cream);font-family:'Lato',sans-serif;font-size:15px;color:var(--td);
+  outline:none;transition:all .2s;
+}
+.form-input:focus{border-color:var(--bark);background:var(--warm)}
+.form-input::placeholder{color:var(--tl)}
+
+.btn-primary{
+  width:100%;padding:14px;background:var(--bark);color:var(--warm);border:none;border-radius:8px;
+  font-family:'Lato',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;margin-top:8px;
+}
+.btn-primary:hover{background:var(--espresso)}
+.btn-primary:disabled{background:var(--sand);cursor:not-allowed}
+
+.btn-ghost{
+  width:100%;padding:12px;background:transparent;color:var(--tm);border:1px solid var(--sand);
+  border-radius:8px;font-family:'Lato',sans-serif;font-size:13px;letter-spacing:1px;
+  cursor:pointer;transition:all .2s;margin-top:8px;
+}
+.btn-ghost:hover{border-color:var(--mocha);color:var(--bark)}
+
+.form-divider{text-align:center;font-size:12px;color:var(--tl);margin:16px 0;position:relative}
+.form-divider::before,.form-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--sand)}
+.form-divider::before{left:0}.form-divider::after{right:0}
+
+.error-msg{background:#FEF2F2;border:1px solid #FECACA;border-radius:6px;padding:10px 14px;font-size:13px;color:#991B1B;margin-bottom:16px;display:none}
+.success-msg{background:var(--greenl);border:1px solid #A7D7A8;border-radius:6px;padding:10px 14px;font-size:13px;color:#2D6A2F;margin-bottom:16px;display:none}
+
+.device-warning{
+  background:#FFF8EC;border:1px solid #F5D98A;border-radius:8px;padding:16px 18px;
+  display:none;margin-bottom:16px;
+}
+.dw-title{font-size:13px;font-weight:700;color:#92600A;margin-bottom:6px}
+.dw-text{font-size:13px;color:#B07D2A;line-height:1.6}
+
+.lr-footer{margin-top:32px;font-size:12px;color:var(--tl);text-align:center;line-height:1.7}
+.lr-footer a{color:var(--mocha);text-decoration:none}
+
+/* toggle entre login/register */
+.auth-toggle{display:flex;border:1px solid var(--sand);border-radius:8px;margin-bottom:28px;overflow:hidden}
+.at-btn{flex:1;padding:10px;text-align:center;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;background:transparent;border:none;color:var(--tm);font-family:'Lato',sans-serif;transition:all .2s}
+.at-btn.on{background:var(--bark);color:var(--warm)}
+
+/* loading spinner */
+.spinner{display:none;width:20px;height:20px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===================== APP SCREEN ===================== */
+#app-screen{display:none}
+.wrap{max-width:900px;margin:0 auto;padding-bottom:60px}
+
+.hdr{background:var(--espresso);padding:28px 40px 0;text-align:center;position:relative}
+.hdr-top{display:flex;justify-content:flex-end;padding-bottom:0;margin-bottom:-8px}
+.logout-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--taupe);font-size:11px;letter-spacing:1px;padding:5px 12px;border-radius:20px;cursor:pointer;font-family:'Lato',sans-serif;text-transform:uppercase;transition:all .2s}
+.logout-btn:hover{background:rgba(255,255,255,0.15)}
+.hdr-user{font-size:11px;color:rgba(201,185,154,0.6);letter-spacing:1px;margin-right:10px}
+
+.hdr-orn{color:var(--taupe);letter-spacing:8px;font-size:16px;display:block;margin-bottom:6px}
+.hdr h1{font-family:'Playfair Display',serif;font-size:28px;color:var(--warm);font-weight:400}
+.hdr h1 em{color:var(--taupe);font-style:italic}
+.hdr-sub{font-size:11px;color:var(--taupe);letter-spacing:3px;margin-top:4px;text-transform:uppercase}
+.prog-wrap{margin:16px 40px 0;height:3px;background:rgba(255,255,255,0.1);border-radius:2px}
+.prog-fill{height:100%;background:var(--taupe);border-radius:2px;transition:width .5s}
+.prog-lbl{font-size:11px;color:var(--taupe);margin-top:5px;padding-bottom:18px;letter-spacing:1px}
+.nav{display:flex;gap:8px;padding:16px 22px;background:var(--espresso);overflow-x:auto}
+.nav::-webkit-scrollbar{display:none}
+.npill{padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:var(--taupe);font-family:'Lato',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:all .2s}
+.npill.on,.npill:hover{background:var(--accent);color:var(--warm);border-color:var(--accent)}
+
+.content{padding:22px}
+.screen{display:none}.screen.on{display:block}
+
+/* TODAY */
+.card{background:var(--warm);border:1px solid var(--sand);border-radius:12px;overflow:hidden;margin-bottom:18px}
+.card-hdr{background:var(--bark);padding:14px 22px;display:flex;justify-content:space-between;align-items:center}
+.clbl{font-size:10px;color:var(--taupe);letter-spacing:2px;text-transform:uppercase}
+.cdate{font-family:'Playfair Display',serif;font-size:19px;color:var(--warm)}
+.ctheme{font-size:11px;color:var(--taupe);margin-top:2px}
+.cdaynum{font-family:'Playfair Display',serif;font-size:42px;color:rgba(255,255,255,0.12);font-weight:600;line-height:1}
+
+.verse-blk{padding:20px 22px;background:var(--asoft);border-bottom:1px solid var(--linen);position:relative}
+.verse-q{font-family:'Playfair Display',serif;font-size:16px;color:var(--bark);font-style:italic;line-height:1.7}
+.verse-r{font-size:12px;color:var(--mocha);margin-top:7px;font-weight:700;letter-spacing:1px}
+.verse-ico{position:absolute;top:14px;right:20px;font-size:28px;opacity:.1;font-family:'Playfair Display',serif;color:var(--bark)}
+
+.tabs{display:flex;border-bottom:1px solid var(--sand);background:var(--warm)}
+.tab{flex:1;padding:11px;text-align:center;font-size:11px;color:var(--tl);cursor:pointer;letter-spacing:.5px;border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;border-top:none;border-left:none;border-right:none;background:none;font-family:'Lato',sans-serif}
+.tab.on{color:var(--bark);border-bottom-color:var(--bark)}
+.tc{padding:20px 22px;display:none}.tc.on{display:block}
+
+.stitle{font-size:10px;color:var(--tl);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.stitle::after{content:'';flex:1;height:1px;background:var(--sand)}
+.dbody{font-size:15px;color:var(--td);line-height:1.85;margin-bottom:16px}
+.sbox{background:var(--linen);border-left:3px solid var(--mocha);padding:14px 18px;border-radius:0 8px 8px 0;margin:12px 0}
+.sname{font-family:'Playfair Display',serif;font-size:13px;color:var(--bark);font-weight:600;margin-bottom:5px}
+.stext{font-size:14px;color:var(--tm);line-height:1.7;font-style:italic}
+.wpill{display:inline-block;background:var(--espresso);color:var(--taupe);font-size:12px;padding:5px 13px;border-radius:20px;margin:4px 4px 4px 0}
+
+.qa-q{font-size:14px;font-weight:700;color:var(--bark);margin-bottom:6px;display:flex;gap:8px;align-items:flex-start}
+.qbadge{background:var(--bark);color:var(--warm);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px}
+.qa-a{font-size:14px;color:var(--tm);line-height:1.7;padding-left:28px;margin-bottom:14px}
+.ref-box{background:var(--asoft);border:1px dashed var(--taupe);border-radius:8px;padding:13px 15px;margin-top:10px}
+.ref-lbl{font-size:10px;color:var(--mocha);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
+.ref-text{font-size:14px;color:var(--td);font-style:italic}
+.esboco{background:var(--linen);border-radius:8px;padding:14px 18px;font-size:14px;line-height:2.1;color:var(--td)}
+.esboco strong{color:var(--bark);font-size:11px;letter-spacing:1px;text-transform:uppercase}
+
+/* DIARY */
+.diary-area{
+  width:100%;min-height:120px;padding:14px 16px;border:1px solid var(--sand);
+  border-radius:8px;background:var(--cream);font-family:'Lato',sans-serif;
+  font-size:14px;color:var(--td);resize:vertical;outline:none;line-height:1.7;
+}
+.diary-area:focus{border-color:var(--bark)}
+.diary-save{
+  margin-top:8px;padding:9px 20px;background:var(--bark);color:var(--warm);
+  border:none;border-radius:6px;font-family:'Lato',sans-serif;font-size:12px;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;
+}
+.diary-save:hover{background:var(--espresso)}
+.diary-saved{font-size:12px;color:var(--green);margin-left:10px;opacity:0;transition:opacity .3s}
+
+/* STREAK */
+.streak-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--espresso);border-radius:20px;padding:7px 16px;margin-bottom:16px;
+}
+.streak-fire{font-size:16px}
+.streak-txt{font-size:13px;color:var(--taupe);letter-spacing:.5px}
+.streak-num{font-family:'Playfair Display',serif;font-size:18px;color:var(--warm)}
+
+/* COMPLETE */
+.czone{padding:18px 22px 20px;border-top:1px solid var(--linen);text-align:center}
+.cbtn{display:inline-flex;align-items:center;gap:10px;padding:12px 28px;background:var(--bark);color:var(--warm);border:none;border-radius:8px;font-family:'Lato',sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.cbtn:hover{background:var(--espresso)}
+.cbtn.done{background:var(--green)}
+.ck{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;font-size:11px}
+.chint{font-size:11px;color:var(--tl);margin-top:8px;letter-spacing:.5px}
+
+/* CALENDAR */
+.mstrip{display:flex;gap:4px;padding:12px 20px;background:var(--linen);border-bottom:1px solid var(--sand);overflow-x:auto}
+.mstrip::-webkit-scrollbar{display:none}
+.mtab{padding:5px 11px;border-radius:4px;border:1px solid var(--sand);background:var(--warm);color:var(--tm);font-size:11px;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'Lato',sans-serif}
+.mtab.on{background:var(--bark);color:var(--warm);border-color:var(--bark)}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cal-title{font-family:'Playfair Display',serif;font-size:19px;color:var(--espresso)}
+.m-badge{background:var(--linen);border:1px solid var(--sand);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--mocha)}
+.dlblrow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:5px}
+.dlbl{text-align:center;font-size:10px;color:var(--tl)}
+.dgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:12px}
+.dcell{aspect-ratio:1;border-radius:6px;border:1px solid var(--sand);background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--tm);cursor:pointer;transition:all .2s;position:relative}
+.dcell:hover{border-color:var(--mocha)}
+.dcell.tod{border-color:var(--bark);background:var(--asoft);color:var(--bark);font-weight:700}
+.dcell.done{background:var(--bark);border-color:var(--bark);color:var(--warm)}
+.dcell.done::after{content:'✓';position:absolute;top:1px;right:3px;font-size:7px;color:var(--taupe)}
+.legend{display:flex;gap:14px;margin-top:4px}
+.li{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--tl)}
+.ld{width:10px;height:10px;border-radius:2px}
+.cal-prog{font-size:12px;color:var(--tl);margin-top:12px;text-align:center}
+
+/* WEEKLY */
+.wlist{display:flex;flex-direction:column;gap:8px}
+.wi{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--warm);border:1px solid var(--sand);border-radius:8px;cursor:pointer;transition:all .2s}
+.wi:hover{border-color:var(--mocha)}
+.wi.done{border-color:var(--green);background:var(--greenl)}
+.wnum{width:34px;height:34px;border-radius:50%;background:var(--linen);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;color:var(--bark);flex-shrink:0}
+.wi.done .wnum{background:var(--green);color:var(--warm)}
+.wi-info{flex:1}
+.wi-title{font-size:14px;color:var(--td);font-weight:700}
+.wi-ref{font-size:12px;color:var(--tl)}
+.wck{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--sand);display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;flex-shrink:0}
+.wi.done .wck{background:var(--green);border-color:var(--green);color:white}
+
+/* STORIES */
+.story-card{background:var(--warm);border:1px solid var(--sand);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.story-card-hdr{background:var(--linen);padding:12px 18px;border-bottom:1px solid var(--sand)}
+.story-card-name{font-family:'Playfair Display',serif;font-size:14px;color:var(--bark);font-weight:600}
+.story-card-theme{font-size:11px;color:var(--mocha);margin-top:2px;letter-spacing:.5px}
+.story-card-body{padding:14px 18px;font-size:14px;color:var(--tm);line-height:1.75;font-style:italic}
+
+/* ACHIEVEMENTS */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:10px}
+.ach-item{background:var(--warm);border:1px solid var(--sand);border-radius:10px;padding:16px;text-align:center;transition:all .2s}
+.ach-item.unlocked{border-color:var(--mocha);background:var(--asoft)}
+.ach-icon{font-size:28px;margin-bottom:8px;display:block;filter:grayscale(1);opacity:.3}
+.ach-item.unlocked .ach-icon{filter:none;opacity:1}
+.ach-title{font-size:13px;font-weight:700;color:var(--bark);margin-bottom:4px}
+.ach-desc{font-size:11px;color:var(--tl)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .login-left{display:none}
+  .login-right{width:100%;padding:40px 28px}
+  .hdr{padding:20px 20px 0}
+  .content{padding:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-left">
+    <div class="ll-inner">
+      <span class="ll-orn">✦ ✦ ✦</span>
+      <h1 class="ll-title">Mulher de <em>Fé</em></h1>
+      <p class="ll-sub">Devocional · 365 Dias</p>
+      <blockquote class="ll-verse">"Porque sou eu que conheço os planos que tenho para vocês, diz o SENHOR, planos de fazê-los prosperar e não de causar dano."</blockquote>
+      <p class="ll-ref">Jeremias 29:11</p>
+      <div class="ll-dots">
+        <div class="ll-dot a"></div>
+        <div class="ll-dot"></div>
+        <div class="ll-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <p class="lr-welcome">Bem-vinda de volta</p>
+    <h2 class="lr-title">Entrar no Devocional</h2>
+    <p class="lr-sub">Acesse sua jornada diária de fé e transformação.</p>
+
+    <div class="auth-toggle">
+      <button class="at-btn on" id="btn-login-tab" onclick="showAuthTab('login')">Entrar</button>
+      <button class="at-btn" id="btn-reg-tab" onclick="showAuthTab('register')">Criar Conta</button>
+    </div>
+
+    <div id="error-msg" class="error-msg"></div>
+    <div id="success-msg" class="success-msg"></div>
+    <div id="device-warning" class="device-warning">
+      <div class="dw-title">⚠️ Dispositivo não autorizado</div>
+      <div class="dw-text">Sua conta já está associada a outro dispositivo. Por segurança, cada conta só pode ser usada em um aparelho. Entre em contato com o suporte se precisar trocar de dispositivo.</div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="form-login">
+      <div class="form-group">
+        <label class="form-label">E-mail</label>
+        <input type="email" class="form-input" id="login-email" placeholder="seu@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Senha</label>
+        <input type="password" class="form-input" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="btn-primary" id="btn-login" onclick="doLogin()">
+        <span id="login-txt">Entrar</span>
+        <div class="spinner" id="login-spin"></div>
+      </button>
+      <div style="text-align:center;margin-top:14px">
+        <a href="#" onclick="doReset()" style="font-size:13px;color:var(--mocha);text-decoration:none">Esqueci minha senha</a>
+      </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="form-register" style="display:none">
+      <div class="form-group">
+        <label class="form-label">Seu nome</label>
+        <input type="text" class="form-input" id="reg-name" placeholder="Como posso te chamar?">
+      </div>
+      <div class="form-group">
+        <label class="form-label">E-mail</label>
+        <input type="email" class="form-input" id="reg-email" placeholder="seu@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Senha</label>
+        <input type="password" class="form-input" id="reg-pass" placeholder="Mínimo 6 caracteres">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Código de acesso</label>
+        <input type="text" class="form-input" id="reg-code" placeholder="Código recebido na compra" style="text-transform:uppercase">
+      </div>
+      <button class="btn-primary" id="btn-reg" onclick="doRegister()">
+        <span id="reg-txt">Criar minha conta</span>
+        <div class="spinner" id="reg-spin"></div>
+      </button>
+    </div>
+
+    <p class="lr-footer">
+      Ao acessar você concorda com nossos <a href="#">Termos de Uso</a>.<br>
+      Problemas? <a href="mailto:suporte@mulherdefé.com.br">suporte@mulherdefe.com.br</a>
+    </p>
+  </div>
+</div>
+
+<!-- ============================================================ APP SCREEN -->
+<div id="app-screen">
+  <div class="wrap">
+    <div class="hdr">
+      <div class="hdr-top">
+        <span class="hdr-user" id="hdr-user"></span>
+        <button class="logout-btn" onclick="doLogout()">Sair</button>
+      </div>
+      <span class="hdr-orn">✦ ✦ ✦</span>
+      <h1>Mulher de <em>Fé</em></h1>
+      <p class="hdr-sub">Devocional · 365 Dias · Edição Feminina</p>
+      <div class="prog-wrap"><div class="prog-fill" id="pbar" style="width:0%"></div></div>
+      <p class="prog-lbl" id="plbl">0 de 365 dias concluídos</p>
+    </div>
+    <div class="nav">
+      <button class="npill on" onclick="go('today')">Hoje</button>
+      <button class="npill" onclick="go('cal')">Calendário</button>
+      <button class="npill" onclick="go('week')">Semana</button>
+      <button class="npill" onclick="go('stories')">Histórias</button>
+      <button class="npill" onclick="go('wisdom')">Sabedoria</button>
+      <button class="npill" onclick="go('diary')">Meu Diário</button>
+      <button class="npill" onclick="go('ach')">Conquistas</button>
+    </div>
+
+    <!-- TODAY -->
+    <div class="screen on" id="s-today">
+      <div class="content">
+        <div id="streak-area"></div>
+        <div class="card">
+          <div class="card-hdr">
+            <div><div class="clbl">Devocional do Dia</div><div class="cdate" id="c-date">Dia 1 · Janeiro</div><div class="ctheme" id="c-theme">✦ FÉ</div></div>
+            <div class="cdaynum" id="c-num">01</div>
+          </div>
+          <div class="verse-blk">
+            <div class="verse-ico">❝</div>
+            <div class="verse-q" id="v-text"></div>
+            <div class="verse-r" id="v-ref"></div>
+          </div>
+          <div class="tabs">
+            <button class="tab on" onclick="stab(0)">Meditação</button>
+            <button class="tab" onclick="stab(1)">Reflexão</button>
+            <button class="tab" onclick="stab(2)">Esboço</button>
+          </div>
+          <div class="tc on" id="tc0">
+            <div class="stitle">Meditação</div>
+            <div class="dbody" id="d-body"></div>
+            <div class="sbox">
+              <div class="sname" id="s-name"></div>
+              <div class="stext" id="s-text"></div>
+            </div>
+            <div class="stitle" style="margin-top:14px">Palavras de Sabedoria</div>
+            <span class="wpill" id="w1"></span>
+            <span class="wpill" id="w2"></span>
+          </div>
+          <div class="tc" id="tc1">
+            <div class="stitle">Perguntas para Reflexão</div>
+            <div id="qa-content"></div>
+            <div class="ref-box"><div class="ref-lbl">✦ Pratique agora</div><div class="ref-text" id="practice-text"></div></div>
+          </div>
+          <div class="tc" id="tc2">
+            <div class="stitle">Esboço do Estudo</div>
+            <div class="esboco" id="esboco-content"></div>
+          </div>
+          <div class="czone">
+            <button class="cbtn" id="cbtn" onclick="markDone()">
+              <div class="ck">✓</div>
+              <span id="ctxt">Marcar como Concluído</span>
+            </button>
+            <p class="chint" id="chint">Complete a leitura de hoje para registrar seu progresso</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="screen" id="s-cal">
+      <div class="mstrip" id="mstrip"></div>
+      <div class="content">
+        <div class="cal-head">
+          <div class="cal-title" id="ctitle">Janeiro</div>
+          <div class="m-badge" id="mbadge">✦ Fé</div>
+        </div>
+        <div class="dlblrow"><span class="dlbl">D</span><span class="dlbl">S</span><span class="dlbl">T</span><span class="dlbl">Q</span><span class="dlbl">Q</span><span class="dlbl">S</span><span class="dlbl">S</span></div>
+        <div class="dgrid" id="dgrid"></div>
+        <div class="legend">
+          <div class="li"><div class="ld" style="background:var(--bark)"></div>Concluído</div>
+          <div class="li"><div class="ld" style="background:var(--asoft);border:1px solid var(--bark)"></div>Hoje</div>
+          <div class="li"><div class="ld" style="background:var(--warm);border:1px solid var(--sand)"></div>Pendente</div>
+        </div>
+        <p class="cal-prog" id="cal-prog"></p>
+      </div>
+    </div>
+
+    <!-- WEEKLY -->
+    <div class="screen" id="s-week">
+      <div class="content">
+        <div class="stitle">Esta Semana</div>
+        <div class="wlist" id="wlist"></div>
+      </div>
+    </div>
+
+    <!-- STORIES -->
+    <div class="screen" id="s-stories">
+      <div class="content">
+        <div class="stitle">Histórias de Mulheres de Fé</div>
+        <div id="slist"></div>
+      </div>
+    </div>
+
+    <!-- WISDOM -->
+    <div class="screen" id="s-wisdom">
+      <div class="content">
+        <div class="stitle">Perguntas & Sabedoria</div>
+        <div id="wqlist"></div>
+      </div>
+    </div>
+
+    <!-- DIARY -->
+    <div class="screen" id="s-diary">
+      <div class="content">
+        <div class="stitle">Meu Diário de Fé</div>
+        <p style="font-size:14px;color:var(--tm);margin-bottom:16px;line-height:1.7">Este é seu espaço pessoal. Escreva suas reflexões, orações, o que Deus falou ao seu coração hoje.</p>
+        <div class="card" style="padding:18px">
+          <div class="clbl" style="margin-bottom:8px">Entrada de hoje</div>
+          <textarea class="diary-area" id="diary-input" placeholder="O que está no seu coração hoje?"></textarea>
+          <div style="display:flex;align-items:center;margin-top:8px">
+            <button class="diary-save" onclick="saveDiary()">Salvar</button>
+            <span class="diary-saved" id="diary-saved-msg">✓ Salvo!</span>
+          </div>
+        </div>
+        <div id="past-diary"></div>
+      </div>
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+    <div class="screen" id="s-ach">
+      <div class="content">
+        <div class="stitle">Suas Conquistas</div>
+        <div class="ach-grid" id="ach-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ SCRIPTS -->
+<script>
+// ═══════════════════════════════════════════════════
+// 🔧 CONFIGURAÇÃO FIREBASE — SUBSTITUA PELOS SEUS DADOS
+// ═══════════════════════════════════════════════════
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyC2cHO8JbKlwdnsUNLy6-BB1hytcyMGQyw",
+  authDomain: "mulher-de-fe-f3f23.firebaseapp.com",
+  projectId: "mulher-de-fe-f3f23",
+  storageBucket: "mulher-de-fe-f3f23.firebasestorage.app",
+  messagingSenderId: "589053239636",
+  appId: "1:589053239636:web:459dc68ff97bc752e9a8c1",
+  measurementId: "G-8QJVL4L6MQ"
+};
+
+// Código de acesso válido (gerado após compra no Hotmart)
+// Em produção isso deve ser validado no servidor!
+const ACCESS_CODES = ['MF2024', 'FE365', 'GRACA2024']; // exemplo — customize
+
+// ── MODO DEMONSTRAÇÃO (sem Firebase configurado) ──────────────────
+const IS_DEMO = FIREBASE_CONFIG.apiKey === 'SUA_API_KEY_AQUI';
+
+let auth, db;
+
+if (IS_DEMO) {
+  // Mock auth & firestore para funcionar sem Firebase
+  const _listeners = [];
+  const _users = JSON.parse(localStorage.getItem('mf_users') || '{}');
+  auth = {
+    currentUser: null,
+    async signInWithEmailAndPassword(email, pass) {
+      const u = _users[email];
+      if (!u) { const e = new Error(); e.code = 'auth/user-not-found'; throw e; }
+      if (u.pass !== pass) { const e = new Error(); e.code = 'auth/wrong-password'; throw e; }
+      auth.currentUser = { uid: u.uid, email, displayName: u.name,
+        updateProfile: async()=>{} };
+      _listeners.forEach(fn => fn(auth.currentUser));
+      return { user: auth.currentUser };
+    },
+    async createUserWithEmailAndPassword(email, pass) {
+      const uid = 'uid_' + Date.now();
+      _users[email] = { uid, email, pass, name: '' };
+      localStorage.setItem('mf_users', JSON.stringify(_users));
+      auth.currentUser = { uid, email, displayName: '',
+        updateProfile: async({ displayName }) => {
+          _users[email].name = displayName;
+          auth.currentUser.displayName = displayName;
+          localStorage.setItem('mf_users', JSON.stringify(_users));
+        }
+      };
+      _listeners.forEach(fn => fn(auth.currentUser));
+      return { user: auth.currentUser };
+    },
+    async signOut() {
+      auth.currentUser = null;
+      _listeners.forEach(fn => fn(null));
+    },
+    async sendPasswordResetEmail() {},
+    onAuthStateChanged(fn) {
+      _listeners.push(fn);
+      setTimeout(() => {
+        const saved = localStorage.getItem('mf_session');
+        if (saved) {
+          const u = JSON.parse(saved);
+          auth.currentUser = u;
+          fn(u);
+        } else fn(null);
+      }, 100);
+    }
+  };
+  db = {
+    collection: (col) => ({
+      doc: (id) => ({
+        async get() {
+          const data = JSON.parse(localStorage.getItem('mf_db_'+col+'_'+id) || 'null');
+          return { exists: !!data, data: () => data };
+        },
+        async set(data) { localStorage.setItem('mf_db_'+col+'_'+id, JSON.stringify(data)); },
+        async update(data) {
+          const old = JSON.parse(localStorage.getItem('mf_db_'+col+'_'+id) || '{}');
+          localStorage.setItem('mf_db_'+col+'_'+id, JSON.stringify({...old, ...data}));
+        }
+      })
+    })
+  };
+  // Patch serverTimestamp
+  if (typeof firebase !== 'undefined') {
+    try { firebase.firestore = () => db; } catch(e) {}
+  }
+} else {
+  firebase.initializeApp(FIREBASE_CONFIG);
+  auth = firebase.auth();
+  db = firebase.firestore();
+}
+
+// ═══════════════════════════════════════════════════
+// DEVICE FINGERPRINT — identifica o aparelho
+// ═══════════════════════════════════════════════════
+function getDeviceId() {
+  let id = localStorage.getItem('mf_device_id');
+  if (!id) {
+    const nav = window.navigator;
+    const raw = [
+      nav.userAgent, nav.language, nav.platform,
+      screen.width, screen.height, screen.colorDepth,
+      new Date().getTimezoneOffset(),
+      nav.hardwareConcurrency || 0
+    ].join('|');
+    let hash = 0;
+    for (let i = 0; i < raw.length; i++) {
+      hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+      hash |= 0;
+    }
+    id = 'dev_' + Math.abs(hash).toString(36) + '_' + Date.now().toString(36);
+    localStorage.setItem('mf_device_id', id);
+  }
+  return id;
+}
+
+// ═══════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════
+function showAuthTab(tab) {
+  document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('btn-login-tab').classList.toggle('on', tab === 'login');
+  document.getElementById('btn-reg-tab').classList.toggle('on', tab === 'register');
+  clearMessages();
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = msg; el.style.display = 'block';
+  document.getElementById('success-msg').style.display = 'none';
+  document.getElementById('device-warning').style.display = 'none';
+}
+function showSuccess(msg) {
+  const el = document.getElementById('success-msg');
+  el.textContent = msg; el.style.display = 'block';
+  document.getElementById('error-msg').style.display = 'none';
+}
+function clearMessages() {
+  ['error-msg','success-msg','device-warning'].forEach(id => document.getElementById(id).style.display = 'none');
+}
+function setLoading(form, loading) {
+  const prefix = form === 'login' ? 'login' : 'reg';
+  document.getElementById('btn-'+prefix).disabled = loading;
+  document.getElementById(prefix+'-txt').style.display = loading ? 'none' : 'inline';
+  document.getElementById(prefix+'-spin').style.display = loading ? 'block' : 'none';
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  if (!email || !pass) return showError('Preencha e-mail e senha.');
+  clearMessages(); setLoading('login', true);
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    await checkDevice(cred.user);
+  } catch(e) {
+    setLoading('login', false);
+    if (e.code === 'DEVICE_BLOCKED') {
+      document.getElementById('device-warning').style.display = 'block';
+    } else {
+      const msgs = {
+        'auth/user-not-found': 'E-mail não encontrado.',
+        'auth/wrong-password': 'Senha incorreta.',
+        'auth/too-many-requests': 'Muitas tentativas. Aguarde um momento.',
+        'auth/invalid-email': 'E-mail inválido.'
+      };
+      showError(msgs[e.code] || 'Erro ao entrar. Tente novamente.');
+    }
+  }
+}
+
+async function doRegister() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-pass').value;
+  const code = document.getElementById('reg-code').value.trim().toUpperCase();
+  if (!name || !email || !pass || !code) return showError('Preencha todos os campos.');
+  if (pass.length < 6) return showError('Senha deve ter no mínimo 6 caracteres.');
+  if (!ACCESS_CODES.includes(code)) return showError('Código de acesso inválido. Verifique o e-mail da sua compra.');
+  clearMessages(); setLoading('register', true);
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, pass);
+    await cred.user.updateProfile({ displayName: name });
+    const deviceId = getDeviceId();
+    await db.collection('users').doc(cred.user.uid).set({
+      name, email, deviceId, createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      completed: [], diary: {}
+    });
+    showSuccess('Conta criada! Bem-vinda, ' + name + '!');
+    setTimeout(() => loadApp(cred.user), 1500);
+  } catch(e) {
+    setLoading('register', false);
+    const msgs = {
+      'auth/email-already-in-use': 'Este e-mail já está cadastrado.',
+      'auth/invalid-email': 'E-mail inválido.',
+      'auth/weak-password': 'Senha muito fraca.'
+    };
+    showError(msgs[e.code] || 'Erro ao criar conta.');
+  }
+}
+
+// Salva sessão no demo mode
+function persistSession(user) {
+  if (IS_DEMO) localStorage.setItem('mf_session', JSON.stringify({
+    uid: user.uid, email: user.email, displayName: user.displayName
+  }));
+}
+
+async function checkDevice(user) {
+  const deviceId = getDeviceId();
+  const doc = await db.collection('users').doc(user.uid).get();
+  if (!doc.exists) { await auth.signOut(); showError('Conta não encontrada.'); setLoading('login',false); return; }
+  const data = doc.data();
+  if (data.deviceId && data.deviceId !== deviceId) {
+    await auth.signOut();
+    const err = new Error('Device blocked'); err.code = 'DEVICE_BLOCKED';
+    setLoading('login', false); throw err;
+  }
+  if (!data.deviceId) {
+    await db.collection('users').doc(user.uid).update({ deviceId });
+  }
+  persistSession(user);
+  loadApp(user);
+}
+
+async function doReset() {
+  const email = document.getElementById('login-email').value.trim();
+  if (!email) return showError('Digite seu e-mail para recuperar a senha.');
+  try {
+    await auth.sendPasswordResetEmail(email);
+    showSuccess('E-mail de recuperação enviado!');
+  } catch(e) {
+    showError('Não foi possível enviar o e-mail. Verifique o endereço.');
+  }
+}
+
+async function doLogout() {
+  if (confirm('Deseja sair do devocional?')) {
+    if (typeof IS_DEMO !== 'undefined' && IS_DEMO) localStorage.removeItem('mf_session');
+    await auth.signOut();
+    document.getElementById('app-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// APP DATA
+// ═══════════════════════════════════════════════════
+const MONTHS=[
+  {n:'Janeiro',t:'Fé',d:31},{n:'Fevereiro',t:'Identidade em Cristo',d:28},
+  {n:'Março',t:'Propósito & Chamado',d:31},{n:'Abril',t:'Relacionamentos Saudáveis',d:30},
+  {n:'Maio',t:'Mãe & Família',d:31},{n:'Junho',t:'Cura Interior',d:30},
+  {n:'Julho',t:'Coragem',d:31},{n:'Agosto',t:'Sabedoria & Direção',d:31},
+  {n:'Setembro',t:'Gratidão',d:30},{n:'Outubro',t:'Comunidade & Amizade',d:31},
+  {n:'Novembro',t:'Fé em Tempos Difíceis',d:30},{n:'Dezembro',t:'Esperança & Renovação',d:31}
+];
+const DEVS=[
+  {v:'"Porque sou eu que conheço os planos que tenho para vocês..."',r:'Jeremias 29:11',ti:'Deus tem planos para você',sn:'Corrie ten Boom · Holanda, 1944',st:'Aos 51 anos, Corrie foi presa pelos nazistas por esconder judeus. No campo de Ravensbrück, distribuía Bíblias escondidas. Sobreviveu para dizer: "Não existe poço tão fundo que o amor de Deus não seja mais profundo ainda."',w1:'"Confiança não é ausência de medo — é avançar mesmo com ele."',w2:'"Seu hoje é o canteiro do amanhã que Deus plantou."',q1:'O que significa confiar em Deus quando os planos falham?',a1:'Confiar não exige compreensão — exige escolha. Você não precisa entender o mapa para confiar no guia.',q2:'Como a história de hoje se conecta à minha vida?',a2:'Corrie não pediu pelo sofrimento. Mas escolheu não deixar que ele a definisse. Você também pode fazer essa escolha.',prac:'Escreva em um papel uma coisa que você quer entregar a Deus hoje. Dobre-o e guarde como símbolo de entrega.',esb:'<strong>Tema:</strong> Fé que transforma<br><strong>Texto:</strong> Jeremias 29:11<br><strong>Ponto 1:</strong> Deus tem planos específicos para cada mulher<br><strong>Ponto 2:</strong> A confiança é uma escolha ativa<br><strong>Ponto 3:</strong> Mulheres que confiaram no silêncio<br><strong>Aplicação:</strong> Uma área de entrega hoje<br><strong>Oração:</strong> Oração de entrega e esperança'},
+  {v:'"Posso tudo naquele que me fortalece."',r:'Filipenses 4:13',ti:'Força que vem de cima',sn:'Joni Eareckson Tada · EUA, 1967',st:'Aos 17 anos, um acidente deixou Joni tetraplégica. Ela descobriu um talento para pintura — segurando o pincel na boca. Tornou-se artista, autora e fundou ministério para pessoas com deficiência em mais de 100 países.',w1:'"A fraqueza é o convite de Deus para mostrar sua força."',w2:'"Quando você chega ao fim de si, Deus está apenas começando."',q1:'Como encontrar força quando me sinto esgotada?',a1:'A força de Deus não substitui a sua — ela se soma a ela. Peça, descanse, confie. A recarga vem na presença dele.',q2:'O que a história de Joni me ensina sobre limitações?',a2:'Nossas limitações nunca limitam Deus. Muitas vezes, é exatamente nelas que o maior fruto nasce.',prac:'Identifique uma limitação sua que você tem resistido em aceitar. Hoje, entregue-a como oferta a Deus.',esb:'<strong>Tema:</strong> Força nas fraquezas<br><strong>Texto:</strong> Filipenses 4:13<br><strong>Ponto 1:</strong> O paradoxo da força cristã<br><strong>Ponto 2:</strong> A gratidão como combustível<br><strong>Ponto 3:</strong> Joni — de cadeira ao mundo<br><strong>Aplicação:</strong> Uma limitação entregue a Deus<br><strong>Oração:</strong> Oração de dependência e gratidão'},
+  {v:'"Filha, a sua fé a salvou. Vá em paz."',r:'Lucas 8:48',ti:'A coragem de tocar',sn:'Rosa Parks · EUA, 1955',st:'Rosa Parks tinha 42 anos quando recusou ceder seu lugar no ônibus. Com uma fé quieta e inabalável, aquele gesto simples acendeu o movimento pelos direitos civis americano.',w1:'"Coragem não é ausência de medo. É decidir que algo importa mais."',w2:'"Um ato de fé, por menor que pareça, pode mudar o mundo."',q1:'Como posso ter coragem nas situações cotidianas?',a1:'Coragem não precisa de palco. Começa em pequenas escolhas: falar a verdade, manter um limite, não se calar quando é hora de falar.',q2:'O que a fé tem a ver com justiça?',a2:'Fé sem obras é morta. Uma mulher de fé age no mundo — com amor, mas também com firmeza diante da injustiça.',prac:'Existe uma situação na sua vida em que você tem se calado por medo? Ore pedindo coragem para agir com fé.',esb:'<strong>Tema:</strong> Coragem cotidiana<br><strong>Texto:</strong> Lucas 8:43-48<br><strong>Ponto 1:</strong> A mulher que tocou em fé<br><strong>Ponto 2:</strong> Rosa Parks e a fé que age<br><strong>Ponto 3:</strong> Coragem como fruto do Espírito<br><strong>Aplicação:</strong> Uma situação que pede coragem<br><strong>Oração:</strong> Oração de bravura e clareza'},
+  {v:'"Entrega o teu caminho ao SENHOR; confia nele..."',r:'Salmos 37:5',ti:'Entregar para receber',sn:'Elisabeth Elliot · EUA/Equador, 1956',st:'Elisabeth perdeu seu marido, missionário morto por indígenas no Equador. Anos depois, voltou para morar entre o mesmo povo que o matou. "O que Deus pede nunca é tão difícil quanto imagino antes de obedecer", dizia.',w1:'"Entregar não é desistir. É confiar em mãos maiores que as suas."',w2:'"Obediência é o idioma do amor."',q1:'Como entregar sem perder a esperança?',a1:'Entregar não é resignação — é reconhecer que Deus é maior. Você pode ter esperança exatamente porque entregou.',q2:'O que aprendo com Elisabeth sobre perdão?',a2:'Perdoar quem nos feriu profundamente é sobrenatural. Elisabeth não perdoou pelos seus recursos — perdoou pelos de Deus.',prac:'Escreva o nome de algo ou alguém que você ainda não entregou a Deus. Ore sobre isso agora.',esb:'<strong>Tema:</strong> A arte da entrega<br><strong>Texto:</strong> Salmos 37:5<br><strong>Ponto 1:</strong> O que significa "entregar" biblicamente<br><strong>Ponto 2:</strong> Elisabeth Elliot e o perdão impossível<br><strong>Ponto 3:</strong> Entrega como ato de fé ativo<br><strong>Aplicação:</strong> Uma entrega concreta hoje<br><strong>Oração:</strong> Oração de rendição e paz'},
+  {v:'"O SENHOR, teu Deus, está contigo aonde quer que fores."',r:'Josué 1:9',ti:'Não estarás sozinha',sn:'Amy Carmichael · Irlanda/Índia, 1895',st:'Amy foi para a Índia e descobriu crianças sendo vendidas para templos. Com fé radical, fundou o Dohnavur — lar que salvou mais de 1.000 crianças. Passou 20 anos acamada por doença, escrevendo livros que guiam vidas até hoje.',w1:'"Você não está sozinha. O Deus que criou o universo está com você."',w2:'"A solidão sentida nunca é a realidade espiritual."',q1:'Como sentir a presença de Deus nos momentos de solidão?',a1:'Presença não depende de sentimento — depende de promessa. Deus disse que estaria. Seu silêncio não é ausência.',q2:'O que Amy Carmichael me ensina sobre obediência radical?',a2:'Amy foi onde poucos iriam, ficou quando poderia ter ido, e amou quem ninguém mais amava. Obediência radical não pede aprovação — pede fé.',prac:'Leia Josué 1:9 em voz alta três vezes. Deixe a promessa pousar. Depois escreva como ela se aplica à sua vida agora.',esb:'<strong>Tema:</strong> A presença de Deus<br><strong>Texto:</strong> Josué 1:9<br><strong>Ponto 1:</strong> A promessa da presença divina<br><strong>Ponto 2:</strong> Amy Carmichael — sozinha mas não solitária<br><strong>Ponto 3:</strong> Como cultivar consciência da presença<br><strong>Aplicação:</strong> Praticar presença hoje<br><strong>Oração:</strong> Oração de intimidade com Deus'}
+];
+const WQA=[
+  {q:'Como confiar em Deus quando não entendo a situação?',a:'Confiança não exige compreensão — exige escolha. Você não precisa entender o mapa para confiar no guia. Cada dia de fé sem ver é uma semente que floresce no tempo de Deus.'},
+  {q:'O que fazer quando me sinto fraca demais para continuar?',a:'A fraqueza é o convite de Deus. Paulo disse: "quando sou fraco, então sou forte." Sua insuficiência cria espaço para a suficiência dele. Chore, descanse e levante — ele estará lá.'},
+  {q:'Por que mulheres de fé também sofrem tanto?',a:'O sofrimento não é punição nem ausência de Deus — é onde o caráter se forma. As histórias mais transformadoras sempre passam por valetes. O ouro se purifica no fogo, não na mornidão.'},
+  {q:'Como encontrar meu propósito como mulher cristã?',a:'Propósito não é uma carreira — é uma orientação. Pergunte: onde meus dons encontram as necessidades do mundo? Comece ali. Deus revela o mapa enquanto você caminha, não antes.'},
+  {q:'É possível ter fé e ainda ter dúvidas?',a:'Dúvida é a sombra da fé, não sua ausência. Tomé duvidou e viu. Abraão questionou e obedeceu. A fé madura não elimina perguntas — ela aprende a andar com elas.'},
+  {q:'Como cuidar da saúde emocional e espiritual ao mesmo tempo?',a:'Espiritualidade que ignora suas emoções é performance. Deus criou você com sentimentos. Chorar diante dele é adoração. Pedir ajuda é fé. Descansar é obediência.'},
+  {q:'O que fazer quando Deus parece silencioso?',a:'O silêncio de Deus não é abandono — é confiança. Como um pai que observa o filho dar os primeiros passos sem segurar a mão. Continue andando.'},
+  {q:'Como ser uma mulher de influência sem perder a humildade?',a:'Influência verdadeira nasce do serviço, não da performance. As mulheres mais influentes desta lista não buscaram palco. Buscaram obediência. O palco foi consequência.'}
+];
+const ACHIEVEMENTS=[
+  {icon:'🌱',title:'Primeira Semente',desc:'Completou o 1º dia',req:1},
+  {icon:'🌿',title:'Uma Semana',desc:'7 dias concluídos',req:7},
+  {icon:'🌸',title:'Meio Mês',desc:'15 dias concluídos',req:15},
+  {icon:'🌺',title:'Um Mês de Fé',desc:'30 dias concluídos',req:30},
+  {icon:'✨',title:'Dois Meses',desc:'60 dias concluídos',req:60},
+  {icon:'🕊️',title:'Cem Dias',desc:'100 dias concluídos',req:100},
+  {icon:'🌙',title:'Meio Ano',desc:'180 dias concluídos',req:180},
+  {icon:'👑',title:'Mulher de Fé',desc:'365 dias — um ano completo!',req:365}
+];
+
+// ═══════════════════════════════════════════════════
+// APP STATE
+// ═══════════════════════════════════════════════════
+let done=[], diary={}, selMonth=0, curDay=1, curUser=null, userDoc=null;
+
+function getDayOfYear(){var n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/86400000)}
+function getMonthInfo(day){var d=day;for(var i=0;i<MONTHS.length;i++){if(d<=MONTHS[i].d)return{m:i,d:d};d-=MONTHS[i].d}return{m:11,d:MONTHS[11].d}}
+function getStreak(){
+  let s=0,d=curDay;
+  while(done.indexOf(d)>=0){s++;d--}
+  return s;
+}
+
+function updateBar(){
+  const p=Math.round(done.length/365*100);
+  document.getElementById('pbar').style.width=p+'%';
+  document.getElementById('plbl').textContent=done.length+' de 365 dias concluídos — '+p+'%';
+}
+
+async function saveToFirestore(){
+  if(!curUser)return;
+  try{await db.collection('users').doc(curUser.uid).update({completed:done,diary})}catch(e){}
+}
+
+async function markDone(){
+  const btn=document.getElementById('cbtn');
+  if(done.indexOf(curDay)>=0){
+    done=done.filter(x=>x!==curDay);
+    btn.classList.remove('done');
+    document.getElementById('ctxt').textContent='Marcar como Concluído';
+    document.getElementById('chint').textContent='Complete a leitura de hoje para registrar seu progresso';
+  } else {
+    done.push(curDay);
+    btn.classList.add('done');
+    document.getElementById('ctxt').textContent='Concluído! ✓ Bom trabalho!';
+    document.getElementById('chint').textContent='Você completou a leitura de hoje. Que bênção!';
+    renderStreak();
+  }
+  await saveToFirestore();
+  updateBar();
+}
+
+function stab(i){
+  document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('on',idx===i));
+  document.querySelectorAll('.tc').forEach((t,idx)=>t.classList.toggle('on',idx===i));
+}
+
+function go(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.npill').forEach(p=>p.classList.remove('on'));
+  document.getElementById('s-'+name).classList.add('on');
+  const idx={today:0,cal:1,week:2,stories:3,wisdom:4,diary:5,ach:6}[name];
+  document.querySelectorAll('.npill')[idx].classList.add('on');
+  if(name==='cal')renderCal();
+  if(name==='week')renderWeek();
+  if(name==='stories')renderStories();
+  if(name==='wisdom')renderWisdom();
+  if(name==='diary')renderDiary();
+  if(name==='ach')renderAch();
+}
+
+function renderStreak(){
+  const s=getStreak();
+  const area=document.getElementById('streak-area');
+  if(s>=2){
+    area.innerHTML=`<div class="streak-badge"><span class="streak-fire">🔥</span><span class="streak-txt"><span class="streak-num">${s}</span> dias seguidos!</span></div>`;
+  } else area.innerHTML='';
+}
+
+function loadToday(){
+  const info=getMonthInfo(curDay);
+  const dev=DEVS[curDay%DEVS.length];
+  document.getElementById('c-date').textContent='Dia '+info.d+' · '+MONTHS[info.m].n;
+  document.getElementById('c-theme').textContent='✦ '+MONTHS[info.m].t.toUpperCase();
+  document.getElementById('c-num').textContent=String(info.d).padStart(2,'0');
+  document.getElementById('v-text').textContent=dev.v;
+  document.getElementById('v-ref').textContent=dev.r;
+  document.getElementById('d-body').innerHTML='Há momentos em que a incerteza parece gritar mais alto do que qualquer promessa. Você já se sentiu assim?<br><br>O versículo de hoje traz uma palavra poderosa: <em>'+dev.v.replace(/"/g,'')+'</em><br><br>Deus não promete ausência de dificuldades — ele promete presença no meio delas.';
+  document.getElementById('s-name').textContent='✦ '+dev.sn;
+  document.getElementById('s-text').textContent=dev.st;
+  document.getElementById('w1').textContent=dev.w1;
+  document.getElementById('w2').textContent=dev.w2;
+  document.getElementById('qa-content').innerHTML=`<div class="qa-q"><span class="qbadge">P</span>${dev.q1}</div><div class="qa-a">${dev.a1}</div><div class="qa-q"><span class="qbadge">P</span>${dev.q2}</div><div class="qa-a">${dev.a2}</div>`;
+  document.getElementById('practice-text').textContent=dev.prac;
+  document.getElementById('esboco-content').innerHTML=dev.esb;
+  if(done.indexOf(curDay)>=0){
+    document.getElementById('cbtn').classList.add('done');
+    document.getElementById('ctxt').textContent='Concluído! ✓ Bom trabalho!';
+    document.getElementById('chint').textContent='Você completou a leitura de hoje. Que bênção!';
+  }
+  renderStreak();
+}
+
+function buildMStrip(){
+  const s=document.getElementById('mstrip');s.innerHTML='';
+  MONTHS.forEach((m,i)=>{
+    const b=document.createElement('button');
+    b.className='mtab'+(i===selMonth?' on':'');
+    b.textContent=m.n.substring(0,3);
+    b.onclick=()=>{selMonth=i;buildMStrip();renderCal()};
+    s.appendChild(b);
+  });
+}
+
+function renderCal(){
+  buildMStrip();
+  const m=MONTHS[selMonth];
+  document.getElementById('ctitle').textContent=m.n;
+  document.getElementById('mbadge').textContent='✦ '+m.t;
+  const g=document.getElementById('dgrid');g.innerHTML='';
+  let start=0;for(let i=0;i<selMonth;i++)start+=MONTHS[i].d;
+  let mDone=0;
+  for(let d=1;d<=m.d;d++){
+    const gd=start+d;
+    const c=document.createElement('div');
+    c.className='dcell';c.textContent=d;
+    if(done.indexOf(gd)>=0){c.classList.add('done');mDone++}
+    if(gd===curDay)c.classList.add('tod');
+    g.appendChild(c);
+  }
+  document.getElementById('cal-prog').textContent=mDone+' de '+m.d+' dias concluídos em '+m.n;
+}
+
+function renderWeek(){
+  const l=document.getElementById('wlist');l.innerHTML='';
+  const ws=curDay-((curDay-1)%7);
+  for(let i=0;i<7;i++){
+    const day=ws+i;if(day<1||day>365)continue;
+    const info=getMonthInfo(day);
+    const dev=DEVS[day%DEVS.length];
+    const d=document.createElement('div');
+    d.className='wi'+(done.indexOf(day)>=0?' done':'');
+    d.innerHTML=`<div class="wnum">${info.d}</div><div class="wi-info"><div class="wi-title">${dev.ti}</div><div class="wi-ref">${dev.r} · ${MONTHS[info.m].n}</div></div><div class="wck">${done.indexOf(day)>=0?'✓':''}</div>`;
+    l.appendChild(d);
+  }
+}
+
+function renderStories(){
+  const l=document.getElementById('slist');l.innerHTML='';
+  DEVS.forEach(d=>{
+    const b=document.createElement('div');
+    b.className='story-card';
+    b.innerHTML=`<div class="story-card-hdr"><div class="story-card-name">✦ ${d.sn}</div><div class="story-card-theme">${d.ti}</div></div><div class="story-card-body">${d.st}</div>`;
+    l.appendChild(b);
+  });
+}
+
+function renderWisdom(){
+  const l=document.getElementById('wqlist');l.innerHTML='';
+  WQA.forEach(item=>{
+    const b=document.createElement('div');b.style.marginBottom='18px';
+    b.innerHTML=`<div class="qa-q"><span class="qbadge">P</span>${item.q}</div><div class="qa-a">${item.a}</div>`;
+    l.appendChild(b);
+  });
+}
+
+async function saveDiary(){
+  const val=document.getElementById('diary-input').value;
+  const today=new Date().toISOString().split('T')[0];
+  diary[today]=val;
+  await saveToFirestore();
+  const msg=document.getElementById('diary-saved-msg');
+  msg.style.opacity='1';
+  setTimeout(()=>msg.style.opacity='0',2000);
+  renderDiary();
+}
+
+function renderDiary(){
+  const past=document.getElementById('past-diary');past.innerHTML='';
+  const today=new Date().toISOString().split('T')[0];
+  if(diary[today])document.getElementById('diary-input').value=diary[today];
+  const entries=Object.entries(diary).filter(([k])=>k!==today).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,10);
+  if(entries.length){
+    const h=document.createElement('div');h.className='stitle';h.style.marginTop='20px';h.textContent='Entradas Anteriores';past.appendChild(h);
+    entries.forEach(([date,text])=>{
+      const c=document.createElement('div');
+      c.className='card';c.style.padding='16px';c.style.marginBottom='10px';
+      const d=new Date(date+'T12:00:00');
+      c.innerHTML=`<div class="clbl" style="margin-bottom:6px">${d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})}</div><div style="font-size:14px;color:var(--tm);line-height:1.7">${text}</div>`;
+      past.appendChild(c);
+    });
+  }
+}
+
+function renderAch(){
+  const g=document.getElementById('ach-grid');g.innerHTML='';
+  ACHIEVEMENTS.forEach(a=>{
+    const unlocked=done.length>=a.req;
+    const item=document.createElement('div');
+    item.className='ach-item'+(unlocked?' unlocked':'');
+    item.innerHTML=`<span class="ach-icon">${a.icon}</span><div class="ach-title">${a.title}</div><div class="ach-desc">${a.desc}</div>`;
+    g.appendChild(item);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// LOAD APP after login
+// ═══════════════════════════════════════════════════
+async function loadApp(user){
+  curUser=user;
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-screen').style.display='block';
+  document.getElementById('hdr-user').textContent=user.displayName||user.email;
+  try{
+    const doc=await db.collection('users').doc(user.uid).get();
+    if(doc.exists){
+      const data=doc.data();
+      done=data.completed||[];
+      diary=data.diary||{};
+    }
+  }catch(e){}
+  curDay=getDayOfYear();
+  if(curDay<1)curDay=1;if(curDay>365)curDay=365;
+  const si=getMonthInfo(curDay);selMonth=si.m;
+  loadToday();updateBar();
+}
+
+// ═══════════════════════════════════════════════════
+// FIREBASE AUTH STATE
+// ═══════════════════════════════════════════════════
+auth.onAuthStateChanged(async user=>{
+  if(user){
+    try{await checkDevice(user)}
+    catch(e){
+      document.getElementById('login-screen').style.display='flex';
+      document.getElementById('app-screen').style.display='none';
+    }
+  } else {
+    document.getElementById('login-screen').style.display='flex';
+    document.getElementById('app-screen').style.display='none';
+  }
+});
+</script>
+</body>
+</html>
