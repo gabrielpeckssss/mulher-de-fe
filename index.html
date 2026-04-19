@@ -724,7 +724,12 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
     <div class="screen" id="s-notif">
       <div class="content">
         <div class="stitle">Lembretes de Fé</div>
-        <p style="font-size:14px;color:var(--tm);margin-bottom:16px;line-height:1.7">Configure lembretes para não esquecer seu momento diário com Deus.</p>
+
+        <!-- iOS WARNING -->
+        <div id="ios-warning" style="display:none;background:#FFF8EC;border:1px solid #F5D98A;border-radius:10px;padding:14px 16px;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:700;color:#92600A;margin-bottom:6px">⚠️ iPhone / Safari</div>
+          <p style="font-size:13px;color:#B07D2A;line-height:1.7">Notificações automáticas não funcionam no Safari do iPhone. Para receber lembretes, instale o app na sua tela inicial: toque em <strong>Compartilhar →</strong> "Adicionar à Tela de Início" e abra pelo ícone criado.</p>
+        </div>
 
         <div class="notif-card">
           <div class="notif-title">🔔 Lembrete Diário</div>
@@ -736,16 +741,16 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
             </label>
           </div>
           <div class="notif-time-row" id="notif-time-row" style="display:none">
-            <span class="notif-time-label">Horário do lembrete:</span>
+            <span class="notif-time-label">Horário:</span>
             <input type="time" class="notif-time-input" id="notif-time" value="08:00">
             <button class="notif-save" onclick="saveNotifTime()">Salvar</button>
           </div>
-          <div class="notif-status" id="notif-status">✓ Lembrete configurado!</div>
+          <div class="notif-status" id="notif-status" style="display:none">✓ Lembrete salvo!</div>
         </div>
 
         <div class="notif-card">
           <div class="notif-title">✦ Mensagem do lembrete</div>
-          <p style="font-size:13px;color:var(--tm);line-height:1.65;margin-bottom:10px">Quando chegar o horário, você receberá uma notificação com esta mensagem:</p>
+          <p style="font-size:13px;color:var(--tm);line-height:1.65;margin-bottom:10px">Você receberá esta mensagem no horário escolhido:</p>
           <div style="background:var(--linen);border-radius:8px;padding:14px 16px;font-size:14px;color:var(--bark);font-style:italic;font-family:'Playfair Display',serif">
             "Olá! Seu momento de fé está esperando por você. 🌿 Venha se encontrar com Deus hoje."
           </div>
@@ -754,10 +759,10 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
         <div class="notif-card" style="background:var(--asoft);border-color:var(--taupe)">
           <div class="notif-title" style="color:var(--espresso)">💡 Como funciona</div>
           <p style="font-size:13px;color:var(--tm);line-height:1.8">
-            • O lembrete aparece como notificação no seu celular ou computador<br>
+            • Funciona no <strong>Chrome</strong> (Android e PC)<br>
+            • No <strong>iPhone</strong>: instale na tela inicial primeiro<br>
             • Você precisa permitir notificações quando solicitado<br>
-            • Funciona mesmo com o site fechado (no celular)<br>
-            • Você pode desativar a qualquer momento
+            • O site precisa estar aberto ou em segundo plano
           </p>
         </div>
       </div>
@@ -1548,10 +1553,35 @@ async function toggleChallenge(){
 function renderNotif(){
   const enabled=localStorage.getItem('notif_enabled')==='true';
   const time=localStorage.getItem('notif_time')||'08:00';
-  document.getElementById('notif-toggle').checked=enabled;
-  document.getElementById('notif-time').value=time;
-  document.getElementById('notif-time-row').style.display=enabled?'flex':'none';
-  if(enabled)document.getElementById('notif-status').style.display='block';
+
+  // Restore toggle state
+  const toggle=document.getElementById('notif-toggle');
+  const timeRow=document.getElementById('notif-time-row');
+  const status=document.getElementById('notif-status');
+  const timeInput=document.getElementById('notif-time');
+
+  if(toggle) toggle.checked=enabled;
+  if(timeInput) timeInput.value=time;
+  if(timeRow) timeRow.style.display=enabled?'flex':'none';
+  if(status){
+    status.style.display=enabled?'block':'none';
+    status.textContent='✓ Lembrete ativo para as '+time;
+  }
+
+  // Detect iOS Safari and show warning
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;
+  const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  const iosWarning=document.getElementById('ios-warning');
+  const isStandalone=window.navigator.standalone===true;
+  if(iosWarning){
+    // Show warning if iOS Safari but NOT if installed as PWA
+    iosWarning.style.display=(isIOS&&isSafari&&!isStandalone)?'block':'none';
+  }
+
+  // Re-schedule if enabled and permission granted
+  if(enabled&&'Notification' in window&&Notification.permission==='granted'){
+    scheduleNotification();
+  }
 }
 
 async function toggleNotif(){
@@ -1582,8 +1612,11 @@ function saveNotifTime(){
   localStorage.setItem('notif_time',time);
   scheduleNotification();
   const s=document.getElementById('notif-status');
-  s.textContent='✓ Lembrete salvo para as '+time+'!';
+  s.textContent='✓ Lembrete ativo para as '+time;
   s.style.display='block';
+  // Flash confirmation
+  s.style.fontWeight='700';
+  setTimeout(()=>s.style.fontWeight='400',2000);
 }
 
 function scheduleNotification(){
