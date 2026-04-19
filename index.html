@@ -253,6 +253,91 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
 .ach-title{font-size:13px;font-weight:700;color:var(--bark);margin-bottom:4px}
 .ach-desc{font-size:11px;color:var(--tl)}
 
+
+/* ===== AUTO-AVALIAÇÃO ===== */
+.mood-card{background:var(--warm);border:1px solid var(--sand);border-radius:12px;overflow:hidden;margin-bottom:18px}
+.mood-header{background:var(--bark);padding:14px 22px}
+.mood-header-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--warm)}
+.mood-header-sub{font-size:11px;color:var(--taupe);margin-top:2px;letter-spacing:.5px}
+.mood-emojis{display:flex;gap:8px;padding:18px 22px 10px;flex-wrap:wrap}
+.mood-btn{
+  padding:8px 16px;border-radius:20px;border:1px solid var(--sand);
+  background:var(--cream);font-size:13px;color:var(--tm);cursor:pointer;
+  transition:all .2s;font-family:'Lato',sans-serif;
+}
+.mood-btn:hover,.mood-btn.sel{background:var(--bark);color:var(--warm);border-color:var(--bark)}
+.mood-area{
+  width:100%;min-height:90px;padding:12px 16px;border:1px solid var(--sand);
+  border-radius:8px;background:var(--cream);font-family:'Lato',sans-serif;
+  font-size:14px;color:var(--td);resize:vertical;outline:none;line-height:1.7;
+}
+.mood-area:focus{border-color:var(--bark)}
+.mood-save-row{display:flex;align-items:center;gap:10px;padding:14px 22px;border-top:1px solid var(--linen)}
+.mood-save{
+  padding:9px 20px;background:var(--bark);color:var(--warm);
+  border:none;border-radius:6px;font-family:'Lato',sans-serif;font-size:12px;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;
+}
+.mood-save:hover{background:var(--espresso)}
+.mood-saved-msg{font-size:12px;color:var(--green);opacity:0;transition:opacity .3s}
+.mood-history{padding:0 22px 20px}
+.mood-entry{background:var(--linen);border-radius:8px;padding:12px 16px;margin-bottom:10px}
+.mood-entry-date{font-size:11px;color:var(--tl);letter-spacing:1px;margin-bottom:4px}
+.mood-entry-emoji{font-size:14px;margin-bottom:4px;color:var(--bark)}
+.mood-entry-text{font-size:13px;color:var(--tm);line-height:1.65;font-style:italic}
+
+/* ===== RELATÓRIO SEMANAL ===== */
+.report-card{background:var(--warm);border:1px solid var(--sand);border-radius:12px;overflow:hidden;margin-bottom:18px}
+.report-header{background:var(--espresso);padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
+.report-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--warm)}
+.report-badge{background:var(--accent);color:var(--warm);font-size:10px;letter-spacing:1px;padding:4px 10px;border-radius:20px;text-transform:uppercase}
+.report-body{padding:20px 22px;font-size:15px;color:var(--td);line-height:1.85}
+.report-loading{text-align:center;padding:32px;color:var(--tm);font-style:italic;font-size:14px}
+.report-spin{display:inline-block;width:20px;height:20px;border:2px solid var(--sand);border-top-color:var(--bark);border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle}
+.report-gen-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 24px;background:var(--espresso);color:var(--warm);
+  border:none;border-radius:8px;font-family:'Lato',sans-serif;font-size:12px;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;
+  margin:16px 22px;
+}
+.report-gen-btn:hover{background:var(--bark)}
+
+/* ===== DESAFIO DIÁRIO ===== */
+.challenge-card{background:var(--asoft);border:1px solid var(--taupe);border-radius:10px;padding:18px 20px;margin:14px 0}
+.challenge-label{font-size:10px;color:var(--mocha);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.challenge-label::before{content:'✦';color:var(--accent)}
+.challenge-text{font-size:15px;color:var(--bark);line-height:1.7;font-family:'Playfair Display',serif;font-style:italic;margin-bottom:14px}
+.challenge-done-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 18px;background:transparent;color:var(--bark);
+  border:1px solid var(--bark);border-radius:6px;font-family:'Lato',sans-serif;
+  font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;
+}
+.challenge-done-btn:hover,.challenge-done-btn.done{background:var(--green);color:var(--warm);border-color:var(--green)}
+
+/* ===== NOTIFICAÇÕES ===== */
+.notif-card{background:var(--warm);border:1px solid var(--sand);border-radius:10px;padding:18px 20px;margin-bottom:14px}
+.notif-title{font-size:13px;font-weight:700;color:var(--bark);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.notif-toggle{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.notif-label{font-size:14px;color:var(--td)}
+.toggle-sw{position:relative;width:44px;height:24px;cursor:pointer}
+.toggle-sw input{opacity:0;width:0;height:0}
+.toggle-track{position:absolute;inset:0;background:var(--sand);border-radius:12px;transition:all .3s}
+.toggle-sw input:checked + .toggle-track{background:var(--bark)}
+.toggle-track::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:white;top:3px;left:3px;transition:all .3s}
+.toggle-sw input:checked + .toggle-track::after{transform:translateX(20px)}
+.notif-time-row{display:flex;align-items:center;gap:10px;margin-top:8px}
+.notif-time-label{font-size:13px;color:var(--tm)}
+.notif-time-input{padding:7px 12px;border:1px solid var(--sand);border-radius:6px;font-size:13px;color:var(--td);background:var(--cream);outline:none;font-family:'Lato',sans-serif}
+.notif-time-input:focus{border-color:var(--bark)}
+.notif-save{
+  padding:8px 18px;background:var(--bark);color:var(--warm);border:none;
+  border-radius:6px;font-family:'Lato',sans-serif;font-size:11px;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+}
+.notif-status{font-size:12px;color:var(--green);margin-top:8px;display:none}
+
 /* RESPONSIVE */
 @media(max-width:768px){
   .login-left{display:none}
@@ -368,8 +453,9 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
       <button class="npill" onclick="go('week')">Semana</button>
       <button class="npill" onclick="go('stories')">Histórias</button>
       <button class="npill" onclick="go('wisdom')">Sabedoria</button>
-      <button class="npill" onclick="go('diary')">Meu Diário</button>
+      <button class="npill" onclick="go('diary')">Diário & Humor</button>
       <button class="npill" onclick="go('ach')">Conquistas</button>
+      <button class="npill" onclick="go('notif')">🔔 Lembretes</button>
     </div>
 
     <!-- TODAY -->
@@ -401,6 +487,13 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
             <div class="stitle" style="margin-top:14px">Palavras de Sabedoria</div>
             <span class="wpill" id="w1"></span>
             <span class="wpill" id="w2"></span>
+            <div class="challenge-card" id="challenge-card">
+              <div class="challenge-label">Desafio do Dia</div>
+              <div class="challenge-text" id="challenge-text"></div>
+              <button class="challenge-done-btn" id="challenge-btn" onclick="toggleChallenge()">
+                <span id="challenge-btn-txt">Aceitar desafio</span>
+              </button>
+            </div>
           </div>
           <div class="tc" id="tc1">
             <div class="stitle">Perguntas para Reflexão</div>
@@ -465,17 +558,44 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
       </div>
     </div>
 
-    <!-- DIARY -->
+    <!-- DIARY / MOOD / REPORT -->
     <div class="screen" id="s-diary">
       <div class="content">
-        <div class="stitle">Meu Diário de Fé</div>
-        <p style="font-size:14px;color:var(--tm);margin-bottom:16px;line-height:1.7">Este é seu espaço pessoal. Escreva suas reflexões, orações, o que Deus falou ao seu coração hoje.</p>
-        <div class="card" style="padding:18px">
-          <div class="clbl" style="margin-bottom:8px">Entrada de hoje</div>
+
+        <!-- AUTO-AVALIAÇÃO -->
+        <div class="mood-card">
+          <div class="mood-header">
+            <div class="mood-header-title">Como você está hoje?</div>
+            <div class="mood-header-sub">Sua avaliação diária de bem-estar e fé</div>
+          </div>
+          <div class="mood-emojis" id="mood-emojis"></div>
+          <div style="padding:0 22px 14px">
+            <textarea class="mood-area" id="mood-input" placeholder="Conte como está sendo seu dia... pode ser sobre família, relacionamentos, trabalho, sentimentos. Seja honesta!"></textarea>
+          </div>
+          <div class="mood-save-row">
+            <button class="mood-save" onclick="saveMood()">Salvar como estou</button>
+            <span class="mood-saved-msg" id="mood-saved-msg">✓ Registrado!</span>
+          </div>
+          <div class="mood-history" id="mood-history"></div>
+        </div>
+
+        <!-- RELATÓRIO SEMANAL -->
+        <div class="report-card" id="report-card" style="display:none">
+          <div class="report-header">
+            <div class="report-title">Reflexão da Semana</div>
+            <div class="report-badge">✦ Domingo</div>
+          </div>
+          <div id="report-body"></div>
+        </div>
+
+        <!-- DIÁRIO DE ANOTAÇÕES -->
+        <div class="card" style="padding:18px;margin-bottom:14px">
+          <div class="stitle" style="margin-bottom:10px">Minhas Anotações</div>
+          <p style="font-size:13px;color:var(--tl);margin-bottom:12px">Reflexões, orações, o que Deus falou ao seu coração hoje.</p>
           <textarea class="diary-area" id="diary-input" placeholder="O que está no seu coração hoje?"></textarea>
-          <div style="display:flex;align-items:center;margin-top:8px">
+          <div style="display:flex;align-items:center;margin-top:10px;gap:10px">
             <button class="diary-save" onclick="saveDiary()">Salvar</button>
-            <span class="diary-saved" id="diary-saved-msg">✓ Salvo!</span>
+            <span class="diary-saved" id="diary-saved-msg" style="font-size:12px;color:var(--green);opacity:0;transition:opacity .3s">✓ Salvo!</span>
           </div>
         </div>
         <div id="past-diary"></div>
@@ -487,6 +607,49 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
       <div class="content">
         <div class="stitle">Suas Conquistas</div>
         <div class="ach-grid" id="ach-grid"></div>
+      </div>
+    </div>
+
+    <!-- NOTIFICAÇÕES -->
+    <div class="screen" id="s-notif">
+      <div class="content">
+        <div class="stitle">Lembretes de Fé</div>
+        <p style="font-size:14px;color:var(--tm);margin-bottom:16px;line-height:1.7">Configure lembretes para não esquecer seu momento diário com Deus.</p>
+
+        <div class="notif-card">
+          <div class="notif-title">🔔 Lembrete Diário</div>
+          <div class="notif-toggle">
+            <span class="notif-label">Ativar notificações</span>
+            <label class="toggle-sw">
+              <input type="checkbox" id="notif-toggle" onchange="toggleNotif()">
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div class="notif-time-row" id="notif-time-row" style="display:none">
+            <span class="notif-time-label">Horário do lembrete:</span>
+            <input type="time" class="notif-time-input" id="notif-time" value="08:00">
+            <button class="notif-save" onclick="saveNotifTime()">Salvar</button>
+          </div>
+          <div class="notif-status" id="notif-status">✓ Lembrete configurado!</div>
+        </div>
+
+        <div class="notif-card">
+          <div class="notif-title">✦ Mensagem do lembrete</div>
+          <p style="font-size:13px;color:var(--tm);line-height:1.65;margin-bottom:10px">Quando chegar o horário, você receberá uma notificação com esta mensagem:</p>
+          <div style="background:var(--linen);border-radius:8px;padding:14px 16px;font-size:14px;color:var(--bark);font-style:italic;font-family:'Playfair Display',serif">
+            "Olá! Seu momento de fé está esperando por você. 🌿 Venha se encontrar com Deus hoje."
+          </div>
+        </div>
+
+        <div class="notif-card" style="background:var(--asoft);border-color:var(--taupe)">
+          <div class="notif-title" style="color:var(--espresso)">💡 Como funciona</div>
+          <p style="font-size:13px;color:var(--tm);line-height:1.8">
+            • O lembrete aparece como notificação no seu celular ou computador<br>
+            • Você precisa permitir notificações quando solicitado<br>
+            • Funciona mesmo com o site fechado (no celular)<br>
+            • Você pode desativar a qualquer momento
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -509,7 +672,57 @@ const FIREBASE_CONFIG = {
 
 // Código de acesso válido (gerado após compra no Hotmart)
 // Em produção isso deve ser validado no servidor!
-const ACCESS_CODES = ['MF2024', 'FE365', 'GRACA2024']; // exemplo — customize
+const ACCESS_CODES = ['AA6469', 'AC3663', 'AD3607', 'AF5876', 'AH5652', 'AI8659', 'AI9839', 'AJ5687', 'AK6118', 'AM3725', 'AO4886', 'AP4512', 'AP6786', 'AQ6036', 'AQ9040', 'AS1272', 'AS2339', 'AT2217', 'AU1601', 'AU2596', 'AU3085', 'AU4382', 'AX4261', 'AY8521', 'AZ5383', 'AZ6824', 'BA2935', 'BA8729', 'BB4861', 'BC3109', 'BC9317', 'BD1623', 'BD2182', 'BD2774', 'BD9190', 'BD9833', 'BE7000', 'BE9902', 'BF1877', 'BH8929', 'BJ3271', 'BJ5892', 'BJ9170', 'BK1407', 'BK5896', 'BK7983', 'BL3313', 'BM2894', 'BN1153', 'BN1608', 'BN4112', 'BN7784', 'BO3068', 'BP9641', 'BQ3671', 'BS9196', 'BS9606', 'BT6345', 'BT7094', 'BV3064', 'BV4515', 'BX4845', 'BX6031', 'BX6903', 'BZ4883', 'BZ5837', 'BZ6676', 'CB7361', 'CC6869', 'CD1790', 'CD2790', 'CD3505', 'CD6620', 'CG1943', 'CG6268', 'CH2800', 'CH5255', 'CI4524', 'CJ2279', 'CJ3904', 'CK1904', 'CK6250', 'CL4456', 'CL4936', 'CL5018', 'CM3214', 'CM8422', 'CN5835', 'CO4182', 'CO9781', 'CP7095', 'CS4222', 'CS4438', 'CS9893', 'CT1042', 'CT4488', 'CV3651', 'CV5308', 'CV5369', 'CV6866', 'CW8968', 'CX4585', 'CX9537', 'CY1225', 'CZ7055', 'CZ8735', 'DA5846', 'DB7749', 'DC3170', 'DC8099', 'DD7356', 'DE5072', 'DG3280', 'DG8424', 'DH2627', 'DH6888', 'DH8697', 'DI8913', 'DI9883', 'DJ7213', 'DK8042', 'DL1386', 'DL5017', 'DM1960', 'DM6840', 'DN3481', 'DN4295', 'DN6336', 'DO4302', 'DQ4550', 'DQ6432', 'DQ7470', 'DS1086', 'DT6993', 'DV2683', 'DV3998', 'DV6228', 'DV6492', 'DX2341', 'DY1538', 'DY6563', 'DZ6505', 'EA7532', 'EA7766', 'EA7886', 'EA9176', 'EC7976', 'EE4865', 'EE5695', 'EF4705', 'EG3655', 'EI6626', 'EI7637', 'EK6189', 'EK9526', 'EL1042', 'EL1325', 'EL5582', 'EM6456', 'EN4509', 'EN6438', 'EO6923', 'EP1927', 'ES2280', 'ES7021', 'ET2960', 'ET9514', 'ET9705', 'EU5099', 'EW2924', 'EX9326', 'EZ1081', 'EZ3129', 'EZ3402', 'EZ7252', 'EZ7556', 'EZ7603', 'FA3308', 'FA3645', 'FC3451', 'FD9200', 'FF8835', 'FF9914', 'FG6189', 'FG6643', 'FH1850', 'FH3803', 'FH9257', 'FH9732', 'FI7847', 'FI9841', 'FK3176', 'FK6712', 'FM4577', 'FM5215', 'FM6394', 'FN5626', 'FN9798', 'FO8131', 'FO8379', 'FO8409', 'FO8807', 'FO9269', 'FP5757', 'FQ7011', 'FR4479', 'FS7552', 'FT1357', 'FT4178', 'FU8442', 'FU8998', 'FV9212', 'FW4078', 'FX2059', 'FX2919', 'FX3794', 'FX7535', 'FX7794', 'FX8150', 'FZ7326', 'GA2719', 'GA6393', 'GB5172', 'GB9523', 'GD2325', 'GD6378', 'GE3477', 'GF4186', 'GG3769', 'GI1839', 'GJ1821', 'GK2894', 'GL1960', 'GL3188', 'GL3499', 'GO7724', 'GO9649', 'GQ2839', 'GR2095', 'GS4346', 'GS9478', 'GU5766', 'GU9405', 'GW6986', 'GW9950', 'GX2504', 'GX3356', 'GX4494', 'GY4554', 'GY6137', 'GY8440', 'GZ8782', 'HA3024', 'HA3710', 'HA4188', 'HA8326', 'HB8789', 'HD3247', 'HE3368', 'HE5060', 'HF6855', 'HF9423', 'HG7455', 'HG8138', 'HH4901', 'HH5121', 'HH5292', 'HH6987', 'HI5945', 'HI9159', 'HJ1018', 'HJ3158', 'HJ5943', 'HK9549', 'HL2723', 'HL4821', 'HL5529', 'HM5040', 'HN5808', 'HN7803', 'HO9278', 'HO9402', 'HP7038', 'HQ1714', 'HR4097', 'HS5782', 'HS9252', 'HS9719', 'HU6959', 'HW1691', 'HW9181', 'HY1757', 'HZ4704', 'HZ7157', 'HZ8392', 'HZ8741', 'IA6710', 'ID1456', 'ID4645', 'ID4678', 'ID7850', 'IF2840', 'IG3333', 'IG7480', 'II3184', 'IJ6016', 'IJ6909', 'IJ8239', 'IK1593', 'IK3164', 'IK6384', 'IK9839', 'IL7586', 'IM1129', 'IM4813', 'IM6992', 'IO7921', 'IP9197', 'IQ9002', 'IR6602', 'IS2050', 'IS6909', 'IT7688', 'IU5302', 'IV4235', 'IW3783', 'IW4406', 'IW6018', 'IW6057', 'IY5683', 'IZ3566', 'JA5299', 'JB6626', 'JB8423', 'JC2586', 'JD2196', 'JE2463', 'JF1837', 'JF5072', 'JG5209', 'JH9578', 'JJ1146', 'JK8394', 'JL7917', 'JL8776', 'JM3046', 'JM3359', 'JM8832', 'JN2855', 'JN4662', 'JN6706', 'JP2998', 'JP8369', 'JP8712', 'JQ1974', 'JQ4201', 'JQ6393', 'JQ7387', 'JQ9332', 'JS1228', 'JT3781', 'JU6395', 'JU9677', 'JV2049', 'JW3098', 'JW8761', 'JW9743', 'JX2813', 'JX3472', 'JX5008', 'JX9988', 'JY2413', 'JY6310', 'JY7113', 'JZ5712', 'JZ5916', 'JZ7775', 'KA3673', 'KA5730', 'KA9575', 'KB5919', 'KB7055', 'KC1316', 'KD3230', 'KD3774', 'KD4227', 'KD4944', 'KD7451', 'KE1201', 'KF5491', 'KF8579', 'KG9725', 'KI2574', 'KI9406', 'KJ2120', 'KK2822', 'KK4135', 'KK8197', 'KM7859', 'KM9761', 'KO5927', 'KO7070', 'KR1911', 'KR3744', 'KR5867', 'KT3907', 'KT7168', 'KT7910', 'KT8884', 'KU2528', 'KV6617', 'KV7796', 'KX7914', 'KY1395', 'KY4591', 'KZ2745', 'LA1665', 'LA2424', 'LA4377', 'LA5596', 'LA9145', 'LA9648', 'LB7897', 'LD2418', 'LD7080', 'LD8472', 'LD9642', 'LE1907', 'LE3352', 'LE7775', 'LH7984', 'LH8349', 'LI6983', 'LK5252', 'LK5962', 'LK6257', 'LL3284', 'LL6917', 'LL8337', 'LM2129', 'LN6495', 'LN9023', 'LO3331', 'LO7063', 'LO8854', 'LP7724', 'LQ4739', 'LQ9613', 'LR3453', 'LR3467', 'LS9643', 'LT5693', 'LT6864', 'LU3927', 'LV9936', 'LW1782', 'LX9681', 'LX9946', 'LY3166', 'LY9044', 'LY9240', 'LZ7480', 'MA5962', 'MB1103', 'MC5762', 'MD4497', 'MD5959', 'MF1764', 'MF3930', 'MG9014', 'MH3780', 'MJ7408', 'MK3267', 'MK4334', 'MK6656', 'MK7288', 'ML1728', 'ML3939', 'MM2215', 'MM9777', 'MO2149', 'MO3266', 'MO3824', 'MO7513', 'MP6655', 'MP9351', 'MQ8917', 'MR2861', 'MR9997', 'MS2733', 'MT3846', 'MT8022', 'MU2090', 'MU8244', 'MV2697', 'MW1599', 'MW5709', 'MW9622', 'MX8094', 'MX9684', 'MY1498', 'MY2200', 'NA5132', 'NA8058', 'NA9960', 'NB3470', 'NB4601', 'NC1102', 'NC5291', 'ND2645', 'ND7115', 'ND8576', 'NF4619', 'NF9639', 'NG6260', 'NG7999', 'NH4736', 'NJ2939', 'NJ3343', 'NJ6769', 'NK9451', 'NM5470', 'NM6166', 'NN2135', 'NN3513', 'NN5097', 'NO6396', 'NQ1505', 'NQ4099', 'NQ7583', 'NR4804', 'NW9427', 'NX1629', 'NX4851', 'NY1205', 'NY2541', 'NY8761', 'NZ1674', 'NZ1731', 'NZ1849', 'NZ9885', 'OB3685', 'OB6041', 'OB9040', 'OC3919', 'OD1934', 'OE6034', 'OE7596', 'OE9215', 'OF3038', 'OF4616', 'OF5243', 'OF6990', 'OG2994', 'OG5131', 'OG7658', 'OH4765', 'OI3606', 'OI5395', 'OI7587', 'OK1260', 'OK5013', 'OK8485', 'OL2951', 'OL8300', 'OL9379', 'OL9508', 'OM7441', 'ON5967', 'OP2238', 'OP6551', 'OP7402', 'OP9239', 'OQ5311', 'OQ8592', 'OS6444', 'OS9155', 'OT3150', 'OU7164', 'OU8365', 'OU9001', 'OU9070', 'OW7623', 'OX3105', 'OY1575', 'OY4854', 'OY6993', 'OZ1104', 'PA5490', 'PB6900', 'PC3929', 'PC4241', 'PD7107', 'PD7874', 'PD8607', 'PF2693', 'PF9079', 'PG5502', 'PG7130', 'PH6073', 'PH9579', 'PI3845', 'PJ3472', 'PJ4160', 'PJ8424', 'PK6775', 'PM6836', 'PN1046', 'PN2044', 'PO3081', 'PP1807', 'PP5368', 'PP7408', 'PS9128', 'PU1683', 'PU3709', 'PU7874', 'PV2881', 'PW4557', 'PW4618', 'PW7609', 'PX1126', 'PX4617', 'PY1475', 'PZ2864', 'PZ6017', 'QA3383', 'QA3912', 'QA4836', 'QB2140', 'QC5248', 'QE6636', 'QE8998', 'QF2099', 'QF7522', 'QI6906', 'QI8585', 'QJ3067', 'QK3893', 'QL5510', 'QL6606', 'QL7917', 'QN3896', 'QN7571', 'QN9426', 'QO2176', 'QP8635', 'QQ9043', 'QR3567', 'QS3532', 'QT6264', 'QT8695', 'QV2419', 'QV6254', 'QV8056', 'QW2270', 'QW7788', 'QY2495', 'QY9083', 'QY9588', 'QZ3960', 'QZ7459', 'QZ9012', 'RA1758', 'RA5770', 'RA6719', 'RB5644', 'RB7491', 'RD6628', 'RE3912', 'RE5557', 'RF4629', 'RF6917', 'RG4667', 'RH8747', 'RI1510', 'RI2796', 'RJ2489', 'RJ5557', 'RL1819', 'RL2813', 'RM3886', 'RM5214', 'RM6828', 'RM9371', 'RN6915', 'RN8001', 'RP5548', 'RQ6292', 'RR4489', 'RR7444', 'RS7189', 'RT1928', 'RT6493', 'RU8420', 'RV6684', 'RW7781', 'RX8357', 'RX9315', 'RY8508', 'RY9857', 'RZ4159', 'RZ8929', 'SA9268', 'SB8535', 'SC2049', 'SC2280', 'SD4829', 'SD8362', 'SE2663', 'SE7353', 'SE7808', 'SE8555', 'SE8638', 'SG4350', 'SG4856', 'SG5155', 'SG5561', 'SI2814', 'SJ1954', 'SJ6180', 'SJ6735', 'SJ9486', 'SK5977', 'SL1254', 'SL6120', 'SN4039', 'SN4718', 'SO2170', 'SP8654', 'SP9596', 'SQ9560', 'SS3168', 'SS6009', 'SS9186', 'SU6710', 'SV1850', 'SV6048', 'SV7608', 'SV7764', 'SW2822', 'SX2247', 'SX4740', 'SX8041', 'SY2909', 'SY3105', 'SZ9343', 'TA4562', 'TA4995', 'TA9677', 'TC1106', 'TC8769', 'TD2141', 'TF1999', 'TF6983', 'TF8400', 'TG4365', 'TG5271', 'TG6432', 'TI2807', 'TJ3354', 'TJ4368', 'TK4744', 'TL3072', 'TL9465', 'TM2149', 'TM4872', 'TN6274', 'TN9865', 'TP1608', 'TP6884', 'TP9373', 'TQ9241', 'TS4426', 'TT4068', 'TT5106', 'TT8548', 'TV1107', 'TV5995', 'TX3687', 'TX7550', 'TY1421', 'TY2990', 'TY3020', 'TZ4972', 'TZ5620', 'UA6895', 'UB6704', 'UC4459', 'UC5197', 'UC8398', 'UE2996', 'UE4398', 'UE8000', 'UF3744', 'UF4173', 'UH2635', 'UH3051', 'UI3047', 'UI4056', 'UJ8619', 'UK7891', 'UL2427', 'UL2897', 'UL4964', 'UL6803', 'UL8691', 'UL8935', 'UN7798', 'UP1949', 'UP7054', 'UQ3914', 'UQ9554', 'UR7163', 'UR9992', 'US6994', 'US7376', 'UT4829', 'UU5777', 'UU6951', 'UV3892', 'UV9512', 'UW2665', 'UW3980', 'UW6113', 'UW8525', 'UX7365', 'UY6163', 'UY6398', 'VA2600', 'VB2915', 'VD1784', 'VG4598', 'VH5709', 'VH9136', 'VH9636', 'VI9064', 'VJ2255', 'VJ8145', 'VL2713', 'VM1665', 'VM4841', 'VM9935', 'VN3599', 'VP8835', 'VQ2373', 'VR5836', 'VR6633', 'VR7704', 'VR7764', 'VS8332', 'VT1465', 'VT1767', 'VT6156', 'VT9254', 'VU2224', 'VV3172', 'VV9357', 'VW8716', 'VX6134', 'VZ4157', 'WB3770', 'WB6482', 'WC5596', 'WC9288', 'WD3234', 'WD4922', 'WE3124', 'WF4316', 'WF8096', 'WG9534', 'WG9938', 'WI7800', 'WJ1741', 'WJ6542', 'WK3021', 'WK8744', 'WL1292', 'WL4342', 'WL5673', 'WL8592', 'WM2206', 'WN3159', 'WP4762', 'WQ6538', 'WQ9799', 'WR9620', 'WS1645', 'WT7782', 'WU2860', 'WW8498', 'WX3542', 'WX9304', 'WX9819', 'WX9888', 'WZ3408', 'XA6414', 'XB2073', 'XB2764', 'XB9318', 'XE3661', 'XF2961', 'XG4958', 'XH2486', 'XH5715', 'XH7876', 'XI9569', 'XK5733', 'XK9404', 'XL4451', 'XM2350', 'XM2875', 'XO9486', 'XP1517', 'XP2238', 'XP3982', 'XP6503', 'XQ1084', 'XQ7036', 'XR6670', 'XR8213', 'XS6045', 'XS6639', 'XU9909', 'XV1078', 'XV5850', 'XY7994', 'XZ4654', 'YA1774', 'YA3066', 'YA3746', 'YA6233', 'YA6566', 'YB8916', 'YC1026', 'YD7879', 'YE1473', 'YE3871', 'YF3788', 'YF5597', 'YF8020', 'YG3381', 'YJ4574', 'YJ6419', 'YK1820', 'YN6871', 'YO4398', 'YQ1348', 'YR4381', 'YR5730', 'YR7063', 'YS3257', 'YS8275', 'YS8304', 'YU3760', 'YV4846', 'YV6025', 'YW1333', 'YW5220', 'YX4873', 'YX6186', 'ZA2285', 'ZA2481', 'ZA2604', 'ZD4657', 'ZD4908', 'ZD8144', 'ZF2279', 'ZF4224', 'ZF9787', 'ZG3827', 'ZH2298', 'ZH3739', 'ZH4179', 'ZH5465', 'ZH6895', 'ZI9233', 'ZJ2868', 'ZK4681', 'ZK4716', 'ZL2877', 'ZL4337', 'ZL8389', 'ZN5562', 'ZP4595', 'ZQ5873', 'ZQ7790', 'ZR4172', 'ZS2338', 'ZS4902', 'ZS5789', 'ZS7588', 'ZV6323', 'ZX1694', 'ZX7329', 'ZX8662', 'ZZ2925', 'ZZ3183', 'ZZ3961', 'ZZ5592']; // exemplo — customize
+
+
+// ═══════════════════════════════════════════════════
+// DESAFIOS DIÁRIOS
+// ═══════════════════════════════════════════════════
+const CHALLENGES = [
+  "Escreva o nome de 3 pessoas que te abençoaram esta semana e ore por cada uma delas hoje.",
+  "Faça algo gentil por alguém sem que essa pessoa saiba que foi você.",
+  "Passe 10 minutos em silêncio, sem celular, apenas ouvindo o que Deus quer te dizer.",
+  "Escreva uma carta de perdão — para alguém ou para você mesma. Não precisa enviar.",
+  "Ligue ou mande mensagem para alguém que você não fala há tempo e diga que está pensando nessa pessoa.",
+  "Leia o Salmo 23 em voz alta, devagar, como se fosse a primeira vez.",
+  "Anote 5 coisas pelas quais você é grata hoje — coisas simples que geralmente passam despercebidas.",
+  "Faça uma pausa no meio do dia, feche os olhos e respire fundo 5 vezes, entregando suas preocupações.",
+  "Sirva alguém em casa sem ser pedida. Um café, uma tarefa, uma palavra de encorajamento.",
+  "Escreva sobre um sonho seu que você ainda não contou para ninguém.",
+  "Ore pelo Brasil e por uma liderança que te preocupa. Ore com fé, não com raiva.",
+  "Faça algo que você tem adiado por medo. Pode ser pequeno — mas dê o primeiro passo hoje.",
+  "Leia uma história de mulher de fé da Bíblia (Rute, Ester, Maria) e escreva o que ela te ensina.",
+  "Agradeça por algo difícil que você viveu. Escreva como aquilo te fez crescer.",
+  "Fale com Deus como fala com uma amiga — informal, honesta, sem ceremônia.",
+  "Desconecte das redes sociais por 2 horas e use esse tempo para algo que nutre sua alma.",
+  "Escreva a versão da mulher que você quer ser em 1 ano. Com detalhes.",
+  "Perdoe a si mesma por algo que ainda te pesa. Diga em voz alta: 'Eu me perdoo.'",
+  "Ore antes de dormir por alguém que te irritou recentemente.",
+  "Escreva 3 qualidades suas que você raramente reconhece.",
+  "Leia um versículo de Provérbios 31 e reflita: qual parte dessa mulher já existe em você?",
+  "Ajude alguém sem esperar nada em troca — um estranho, um vizinho, um colega.",
+  "Hoje, em vez de reclamar de algo, encontre uma solução criativa.",
+  "Cuide do seu corpo como templo: beba mais água, descanse, coma algo nutritivo.",
+  "Converse com uma mulher mais velha e peça um conselho de vida.",
+  "Compartilhe algo que você aprendeu esta semana com alguém que precisa ouvir.",
+  "Ore sobre suas finanças — entregue suas preocupações e peça sabedoria.",
+  "Escreva o que você diria para a versão de você com 15 anos.",
+  "Hoje tente não fazer julgamentos. Observe as pessoas com os olhos da compaixão.",
+  "Celebre uma pequena vitória sua. Você merece reconhecer seu próprio progresso."
+];
+
+const MOOD_OPTIONS = [
+  {emoji:'😊', label:'Alegre'},
+  {emoji:'🙏', label:'Grata'},
+  {emoji:'😔', label:'Triste'},
+  {emoji:'😤', label:'Estressada'},
+  {emoji:'😰', label:'Ansiosa'},
+  {emoji:'😴', label:'Cansada'},
+  {emoji:'💪', label:'Determinada'},
+  {emoji:'❤️', label:'Amada'},
+  {emoji:'😕', label:'Confusa'},
+  {emoji:'✨', label:'Em paz'}
+];
 
 // ── MODO DEMONSTRAÇÃO (sem Firebase configurado) ──────────────────
 const IS_DEMO = FIREBASE_CONFIG.apiKey === 'SUA_API_KEY_AQUI';
@@ -682,7 +895,7 @@ async function doRegister() {
     const deviceId = getDeviceId();
     await db.collection('users').doc(cred.user.uid).set({
       name, email, deviceId, createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      completed: [], diary: {}
+      completed: [], diary: {}, mood: {}, challengesDone: {}, weeklyReports: {}
     });
     showSuccess('Conta criada! Bem-vinda, ' + name + '!');
     setTimeout(() => loadApp(cred.user), 1500);
@@ -783,7 +996,7 @@ const ACHIEVEMENTS=[
 // ═══════════════════════════════════════════════════
 // APP STATE
 // ═══════════════════════════════════════════════════
-let done=[], diary={}, selMonth=0, curDay=1, curUser=null, userDoc=null;
+let done=[], diary={}, mood={}, challengesDone={}, weeklyReports={}, selMonth=0, curDay=1, curUser=null, userDoc=null;
 
 function getDayOfYear(){var n=new Date(),s=new Date(n.getFullYear(),0,0);return Math.floor((n-s)/86400000)}
 function getMonthInfo(day){var d=day;for(var i=0;i<MONTHS.length;i++){if(d<=MONTHS[i].d)return{m:i,d:d};d-=MONTHS[i].d}return{m:11,d:MONTHS[11].d}}
@@ -801,7 +1014,7 @@ function updateBar(){
 
 async function saveToFirestore(){
   if(!curUser)return;
-  try{await db.collection('users').doc(curUser.uid).update({completed:done,diary})}catch(e){}
+  try{await db.collection('users').doc(curUser.uid).update({completed:done,diary,mood,challengesDone,weeklyReports})}catch(e){}
 }
 
 async function markDone(){
@@ -831,14 +1044,15 @@ function go(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.npill').forEach(p=>p.classList.remove('on'));
   document.getElementById('s-'+name).classList.add('on');
-  const idx={today:0,cal:1,week:2,stories:3,wisdom:4,diary:5,ach:6}[name];
-  document.querySelectorAll('.npill')[idx].classList.add('on');
+  const idx={today:0,cal:1,week:2,stories:3,wisdom:4,diary:5,ach:6,notif:7}[name];
+  if(idx!==undefined)document.querySelectorAll('.npill')[idx].classList.add('on');
   if(name==='cal')renderCal();
   if(name==='week')renderWeek();
   if(name==='stories')renderStories();
   if(name==='wisdom')renderWisdom();
   if(name==='diary')renderDiary();
   if(name==='ach')renderAch();
+  if(name==='notif')renderNotif();
 }
 
 function renderStreak(){
@@ -871,6 +1085,7 @@ function loadToday(){
     document.getElementById('chint').textContent='Você completou a leitura de hoje. Que bênção!';
   }
   renderStreak();
+  loadChallenge();
 }
 
 function buildMStrip(){
@@ -937,31 +1152,249 @@ function renderWisdom(){
 }
 
 async function saveDiary(){
-  const val=document.getElementById('diary-input').value;
+  const val=document.getElementById('diary-input').value.trim();
+  if(!val) return;
   const today=new Date().toISOString().split('T')[0];
   diary[today]=val;
   await saveToFirestore();
   const msg=document.getElementById('diary-saved-msg');
   msg.style.opacity='1';
   setTimeout(()=>msg.style.opacity='0',2000);
-  renderDiary();
+  renderPastDiary();
 }
 
-function renderDiary(){
+function renderPastDiary(){
   const past=document.getElementById('past-diary');past.innerHTML='';
   const today=new Date().toISOString().split('T')[0];
   if(diary[today])document.getElementById('diary-input').value=diary[today];
-  const entries=Object.entries(diary).filter(([k])=>k!==today).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,10);
+  const entries=Object.entries(diary).filter(([k])=>k!==today).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7);
   if(entries.length){
-    const h=document.createElement('div');h.className='stitle';h.style.marginTop='20px';h.textContent='Entradas Anteriores';past.appendChild(h);
+    const h=document.createElement('div');
+    h.className='stitle';h.style.marginTop='16px';h.textContent='Anotações Anteriores';
+    past.appendChild(h);
     entries.forEach(([date,text])=>{
       const c=document.createElement('div');
-      c.className='card';c.style.padding='16px';c.style.marginBottom='10px';
+      c.className='card';c.style.cssText='padding:14px;margin-bottom:10px;background:var(--warm)';
       const d=new Date(date+'T12:00:00');
       c.innerHTML=`<div class="clbl" style="margin-bottom:6px">${d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})}</div><div style="font-size:14px;color:var(--tm);line-height:1.7">${text}</div>`;
       past.appendChild(c);
     });
   }
+}
+
+function renderDiary(){
+  // Render mood emojis
+  const container=document.getElementById('mood-emojis');
+  container.innerHTML='';
+  const today=new Date().toISOString().split('T')[0];
+  const todayMood=mood[today]||{};
+  MOOD_OPTIONS.forEach(m=>{
+    const btn=document.createElement('button');
+    btn.className='mood-btn'+(todayMood.emoji===m.emoji?' sel':'');
+    btn.innerHTML=m.emoji+' '+m.label;
+    btn.onclick=()=>{
+      document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel');
+    };
+    container.appendChild(btn);
+  });
+
+  // Load today's mood text
+  if(todayMood.text)document.getElementById('mood-input').value=todayMood.text;
+
+  // Render mood history
+  renderMoodHistory();
+
+  // Load diary
+  renderPastDiary();
+
+  // Sunday report
+  const isSunday=new Date().getDay()===0;
+  const reportCard=document.getElementById('report-card');
+  reportCard.style.display=isSunday?'block':'none';
+  if(isSunday)checkWeeklyReport();
+}
+
+async function saveMood(){
+  const today=new Date().toISOString().split('T')[0];
+  const selBtn=document.querySelector('.mood-btn.sel');
+  const emojiLabel=selBtn?selBtn.textContent.trim():'';
+  const text=document.getElementById('mood-input').value.trim();
+  if(!text&&!emojiLabel)return;
+  mood[today]={emoji:emojiLabel,text,date:today};
+  await saveToFirestore();
+  const msg=document.getElementById('mood-saved-msg');
+  msg.style.opacity='1';
+  setTimeout(()=>msg.style.opacity='0',2000);
+  renderMoodHistory();
+}
+
+function renderMoodHistory(){
+  const hist=document.getElementById('mood-history');hist.innerHTML='';
+  const today=new Date().toISOString().split('T')[0];
+  const entries=Object.entries(mood).filter(([k])=>k!==today).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,5);
+  if(!entries.length)return;
+  const t=document.createElement('div');t.className='stitle';t.style.cssText='margin:4px 0 10px';t.textContent='Registros Anteriores';hist.appendChild(t);
+  entries.forEach(([date,data])=>{
+    const d=new Date(date+'T12:00:00');
+    const el=document.createElement('div');el.className='mood-entry';
+    el.innerHTML=`<div class="mood-entry-date">${d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'})}</div><div class="mood-entry-emoji">${data.emoji||''}</div><div class="mood-entry-text">${data.text||''}</div>`;
+    hist.appendChild(el);
+  });
+}
+
+async function checkWeeklyReport(){
+  const body=document.getElementById('report-body');
+  const weekKey='report_'+getWeekKey();
+  if(weeklyReports[weekKey]){
+    body.innerHTML=`<div class="report-body">${weeklyReports[weekKey]}</div>`;
+    return;
+  }
+  body.innerHTML=`<button class="report-gen-btn" onclick="generateWeeklyReport()">✦ Gerar minha Reflexão da Semana</button><p style="font-size:13px;color:var(--tl);padding:0 22px 16px">Baseado nos seus registros de humor desta semana</p>`;
+}
+
+function getWeekKey(){
+  const d=new Date();
+  const startOfYear=new Date(d.getFullYear(),0,1);
+  const week=Math.floor((d-startOfYear)/(7*24*60*60*1000));
+  return d.getFullYear()+'_w'+week;
+}
+
+async function generateWeeklyReport(){
+  const body=document.getElementById('report-body');
+  body.innerHTML=`<div class="report-loading"><span class="report-spin"></span>Preparando sua reflexão semanal...</div>`;
+  
+  // Collect this week's moods
+  const weekMoods=[];
+  const today=new Date();
+  for(let i=6;i>=0;i--){
+    const d=new Date(today);d.setDate(d.getDate()-i);
+    const key=d.toISOString().split('T')[0];
+    if(mood[key])weekMoods.push({day:d.toLocaleDateString('pt-BR',{weekday:'long'}),emoji:mood[key].emoji||'',text:mood[key].text||''});
+  }
+
+  const userName=curUser?.displayName||'querida';
+  const moodsText=weekMoods.length>0
+    ? weekMoods.map(m=>(m.day+': '+m.emoji+' '+m.text)).join(' | ')
+    : 'Sem registros esta semana.';
+
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{
+          role:'user',
+          content:`Você é uma conselheira espiritual cristã, amorosa e encorajadora, para mulheres. Analise os registros de humor e sentimentos desta mulher chamada ${userName} durante a semana e crie uma "Reflexão Semanal" personalizada e encorajadora.
+
+Registros da semana:
+${moodsText}
+
+Crie uma reflexão de 3 parágrafos que:
+1. Reconheça como foi a semana dela com empatia e carinho
+2. Traga uma palavra de encorajamento espiritual baseada nos sentimentos dela
+3. Termine com um versículo bíblico relevante e uma oração curta
+
+Escreva em português do Brasil, tom quente e encorajador, como uma amiga cristã mais velha e sábia. Não mencione IA, use linguagem natural e pessoal.`
+        }]
+      })
+    });
+    const data=await resp.json();
+    const text=data.content?.[0]?.text||'Não foi possível gerar o relatório.';
+    const formatted=text.split('\n\n').join('</p><p style="margin-top:14px">').split('\n').join('<br>')
+    const html=`<div class="report-body"><p>${formatted}</p></div>`;
+    body.innerHTML=html;
+    weeklyReports[getWeekKey()]=html;
+    await saveToFirestore();
+  }catch(e){
+    body.innerHTML=`<div class="report-body" style="padding:20px 22px"><p style="color:var(--tm);font-style:italic">Não foi possível gerar a reflexão agora. Tente novamente mais tarde.</p></div>`;
+  }
+}
+
+// ═══ CHALLENGE ═══
+function loadChallenge(){
+  const ch=CHALLENGES[curDay%CHALLENGES.length];
+  document.getElementById('challenge-text').textContent=ch;
+  const today=new Date().toISOString().split('T')[0];
+  const isDone=challengesDone[today];
+  const btn=document.getElementById('challenge-btn');
+  const btnTxt=document.getElementById('challenge-btn-txt');
+  if(isDone){
+    btn.classList.add('done');
+    btnTxt.textContent='✓ Desafio cumprido!';
+  } else {
+    btn.classList.remove('done');
+    btnTxt.textContent='Aceitar desafio';
+  }
+}
+
+async function toggleChallenge(){
+  const today=new Date().toISOString().split('T')[0];
+  challengesDone[today]=!challengesDone[today];
+  await saveToFirestore();
+  loadChallenge();
+}
+
+// ═══ NOTIFICATIONS ═══
+function renderNotif(){
+  const enabled=localStorage.getItem('notif_enabled')==='true';
+  const time=localStorage.getItem('notif_time')||'08:00';
+  document.getElementById('notif-toggle').checked=enabled;
+  document.getElementById('notif-time').value=time;
+  document.getElementById('notif-time-row').style.display=enabled?'flex':'none';
+  if(enabled)document.getElementById('notif-status').style.display='block';
+}
+
+async function toggleNotif(){
+  const enabled=document.getElementById('notif-toggle').checked;
+  document.getElementById('notif-time-row').style.display=enabled?'flex':'none';
+  if(enabled){
+    if('Notification' in window){
+      const perm=await Notification.requestPermission();
+      if(perm==='granted'){
+        localStorage.setItem('notif_enabled','true');
+        document.getElementById('notif-status').style.display='block';
+        scheduleNotification();
+        new Notification('Mulher de Fé 🌿',{body:'Notificações ativadas! Seu lembrete diário está configurado.'});
+      } else {
+        document.getElementById('notif-toggle').checked=false;
+        document.getElementById('notif-time-row').style.display='none';
+        alert('Para ativar lembretes, permita notificações no seu navegador.');
+      }
+    }
+  } else {
+    localStorage.setItem('notif_enabled','false');
+    document.getElementById('notif-status').style.display='none';
+  }
+}
+
+function saveNotifTime(){
+  const time=document.getElementById('notif-time').value;
+  localStorage.setItem('notif_time',time);
+  scheduleNotification();
+  const s=document.getElementById('notif-status');
+  s.textContent='✓ Lembrete salvo para as '+time+'!';
+  s.style.display='block';
+}
+
+function scheduleNotification(){
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+  const time=localStorage.getItem('notif_time')||'08:00';
+  const [h,m]=time.split(':').map(Number);
+  const now=new Date();
+  const next=new Date();
+  next.setHours(h,m,0,0);
+  if(next<=now)next.setDate(next.getDate()+1);
+  const ms=next-now;
+  setTimeout(()=>{
+    new Notification('Mulher de Fé 🌿',{
+      body:'Seu momento de fé está esperando por você. Venha se encontrar com Deus hoje! ✨',
+      icon:'/favicon.ico'
+    });
+    scheduleNotification();
+  },ms);
 }
 
 function renderAch(){
@@ -989,12 +1422,16 @@ async function loadApp(user){
       const data=doc.data();
       done=data.completed||[];
       diary=data.diary||{};
+      mood=data.mood||{};
+      challengesDone=data.challengesDone||{};
+      weeklyReports=data.weeklyReports||{};
     }
   }catch(e){}
   curDay=getDayOfYear();
   if(curDay<1)curDay=1;if(curDay>365)curDay=365;
   const si=getMonthInfo(curDay);selMonth=si.m;
   loadToday();updateBar();
+  if(localStorage.getItem('notif_enabled')==='true')scheduleNotification();
 }
 
 // ═══════════════════════════════════════════════════
@@ -1014,4 +1451,4 @@ auth.onAuthStateChanged(async user=>{
 });
 </script>
 </body>
-</html>
+</html>    const formatted=text.split('\n\n').join('</p><p style="margin-top:14px">').split('\n').join('<br>')
