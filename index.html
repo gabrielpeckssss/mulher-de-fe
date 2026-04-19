@@ -395,7 +395,7 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
   .mobile-topbar{display:flex!important}
   #mobile-prog-wrap{display:block!important;margin:0;background:var(--espresso)}
   #mobile-plbl{background:var(--espresso);margin:0;padding:2px 16px 8px;display:block!important}
-  .mobile-nav{display:block}
+  /* drawer via hamburger - no visible nav bar */
   /* add top padding so content doesnt hide behind sticky nav */
   .wrap{padding-bottom:20px;padding-top:0}
   /* full width card */
@@ -508,12 +508,43 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
         <div class="mobile-topbar-title">Mulher de <em>Fé</em></div>
         <div style="font-size:10px;color:var(--taupe);letter-spacing:1px" id="mobile-topbar-user"></div>
       </div>
-      <button class="logout-btn" onclick="doLogout()" style="font-size:10px;padding:4px 10px">Sair</button>
+      <button class="hamburger-btn" id="hamburger-btn" onclick="openDrawer()">
+        <span></span><span></span><span></span>
+      </button>
     </div>
     <div class="mobile-progress-wrap" id="mobile-prog-wrap" style="display:none">
       <div class="mobile-progress-fill" id="mobile-pbar" style="width:0%"></div>
     </div>
     <span class="mobile-progress-lbl" id="mobile-plbl" style="display:none"></span>
+
+    <!-- DRAWER OVERLAY -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+    <!-- DRAWER SIDEBAR -->
+    <div class="drawer" id="drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">Mulher de <em>Fé</em></div>
+        <button class="drawer-close" onclick="closeDrawer()">✕</button>
+      </div>
+      <div class="drawer-user" id="drawer-user"></div>
+      <div class="drawer-progress">
+        <div class="drawer-prog-bar"><div class="drawer-prog-fill" id="drawer-pbar" style="width:0%"></div></div>
+        <div class="drawer-prog-lbl" id="drawer-plbl">0 de 365 dias</div>
+      </div>
+      <div class="drawer-nav">
+        <button class="drawer-item on" id="di-today" onclick="go('today');closeDrawer()"><span class="drawer-item-icon">📖</span>Hoje</button>
+        <button class="drawer-item" id="di-cal" onclick="go('cal');closeDrawer()"><span class="drawer-item-icon">📅</span>Calendário</button>
+        <button class="drawer-item" id="di-week" onclick="go('week');closeDrawer()"><span class="drawer-item-icon">📊</span>Semana</button>
+        <button class="drawer-item" id="di-diary" onclick="go('diary');closeDrawer()"><span class="drawer-item-icon">💭</span>Diário & Humor</button>
+        <div class="drawer-divider"></div>
+        <button class="drawer-item" id="di-stories" onclick="go('stories');closeDrawer()"><span class="drawer-item-icon">✦</span>Histórias</button>
+        <button class="drawer-item" id="di-wisdom" onclick="go('wisdom');closeDrawer()"><span class="drawer-item-icon">💡</span>Sabedoria</button>
+        <button class="drawer-item" id="di-ach" onclick="go('ach');closeDrawer()"><span class="drawer-item-icon">🏆</span>Conquistas</button>
+        <button class="drawer-item" id="di-notif" onclick="go('notif');closeDrawer()"><span class="drawer-item-icon">🔔</span>Lembretes</button>
+        <div class="drawer-divider"></div>
+        <button class="drawer-logout" onclick="doLogout()"><span class="drawer-item-icon">↩</span>Sair</button>
+      </div>
+    </div>
 
     <div class="hdr">
       <div class="hdr-top">
@@ -539,19 +570,7 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
 
 
 
-    <!-- MOBILE SCROLL NAV -->
-    <div class="mobile-nav" id="mobile-nav">
-      <div class="mobile-nav-inner">
-        <button class="mnav-btn on" id="mn-today" onclick="go('today')"><span class="mnav-icon">📖</span><span>Hoje</span></button>
-        <button class="mnav-btn" id="mn-cal" onclick="go('cal')"><span class="mnav-icon">📅</span><span>Calendário</span></button>
-        <button class="mnav-btn" id="mn-week" onclick="go('week')"><span class="mnav-icon">📊</span><span>Semana</span></button>
-        <button class="mnav-btn" id="mn-diary" onclick="go('diary')"><span class="mnav-icon">💭</span><span>Diário</span></button>
-        <button class="mnav-btn" id="mn-stories" onclick="go('stories')"><span class="mnav-icon">✦</span><span>Histórias</span></button>
-        <button class="mnav-btn" id="mn-wisdom" onclick="go('wisdom')"><span class="mnav-icon">💡</span><span>Sabedoria</span></button>
-        <button class="mnav-btn" id="mn-ach" onclick="go('ach')"><span class="mnav-icon">🏆</span><span>Conquistas</span></button>
-        <button class="mnav-btn" id="mn-notif" onclick="go('notif')"><span class="mnav-icon">🔔</span><span>Lembretes</span></button>
-      </div>
-    </div>
+<!-- mobile nav via drawer -->
 
     <!-- TODAY -->
     <div class="screen on" id="s-today">
@@ -1100,6 +1119,11 @@ function updateBar(){
   const mplbl=document.getElementById('mobile-plbl');
   if(mpbar) mpbar.style.width=p+'%';
   if(mplbl) mplbl.textContent=done.length+' de 365 dias — '+p+'%';
+  // Drawer progress
+  const dpbar=document.getElementById('drawer-pbar');
+  const dplbl=document.getElementById('drawer-plbl');
+  if(dpbar) dpbar.style.width=p+'%';
+  if(dplbl) dplbl.textContent=done.length+' de 365 dias — '+p+'%';
 }
 
 function togglePass(id, btn){
@@ -1149,10 +1173,10 @@ function go(name){
   document.getElementById('s-'+name).classList.add('on');
   const idx={today:0,cal:1,week:2,stories:3,wisdom:4,diary:5,ach:6,notif:7}[name];
   if(idx!==undefined)document.querySelectorAll('.npill')[idx].classList.add('on');
-  // Update mobile nav
-  document.querySelectorAll('.mnav-btn,.mnav-drop-item').forEach(b=>b.classList.remove('on'));
-  const mob=document.getElementById('mn-'+name);
-  if(mob)mob.classList.add('on');
+  // Update drawer items
+  document.querySelectorAll('.drawer-item').forEach(b=>b.classList.remove('on'));
+  const di=document.getElementById('di-'+name);
+  if(di)di.classList.add('on');
   if(name==='cal')renderCal();
   if(name==='week')renderWeek();
   if(name==='stories')renderStories();
@@ -1162,7 +1186,19 @@ function go(name){
   if(name==='notif')renderNotif();
 }
 
-// Mobile nav helpers (kept for compatibility)
+// ═══ DRAWER NAV ═══
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('hamburger-btn').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('hamburger-btn').classList.remove('open');
+  document.body.style.overflow='';
+}
 function closeMobileDropdown(){}
 
 function renderStreak(){
@@ -1596,6 +1632,8 @@ async function loadApp(user){
   document.getElementById('hdr-user').textContent=user.displayName||user.email;
   const mtu=document.getElementById('mobile-topbar-user');
   if(mtu)mtu.textContent=user.displayName||user.email;
+  const du=document.getElementById('drawer-user');
+  if(du)du.textContent=user.displayName||user.email;
   try{
     const doc=await db.collection('users').doc(user.uid).get();
     if(doc.exists){
