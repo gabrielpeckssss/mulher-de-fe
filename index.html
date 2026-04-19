@@ -150,7 +150,7 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
 .npill.on,.npill:hover{background:var(--accent);color:var(--warm);border-color:var(--accent)}
 
 /* MOBILE TOP BAR */
-.mobile-topbar{display:none;background:var(--espresso);padding:10px 16px 0;align-items:center;justify-content:space-between}
+.mobile-topbar{display:none;background:var(--espresso);padding:12px 16px 8px;align-items:center;justify-content:space-between}
 .mobile-topbar-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--warm)}
 .mobile-topbar-title em{color:var(--taupe);font-style:italic}
 .mobile-progress-wrap{height:2px;background:rgba(255,255,255,0.1);margin:8px 16px 0;border-radius:2px}
@@ -403,12 +403,9 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
   .nav{display:none}
   /* show mobile topbar and nav */
   .mobile-topbar{display:flex!important}
-  #mobile-prog-wrap,#mobile-plbl{display:block!important}
-  .mobile-nav{display:block}
-  /* mobile topbar is part of sticky header */
-  .mobile-topbar{position:sticky;top:0;z-index:101}
-  #mobile-prog-wrap{position:sticky;top:52px;z-index:101;display:block!important;margin:0;background:var(--espresso)}
+  #mobile-prog-wrap{display:block!important;margin:0;background:var(--espresso)}
   #mobile-plbl{background:var(--espresso);margin:0;padding:2px 16px 8px;display:block!important}
+  .mobile-nav{display:block}
   /* add top padding so content doesnt hide behind sticky nav */
   .wrap{padding-bottom:20px;padding-top:0}
   /* full width card */
@@ -552,37 +549,17 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
 
 
 
-    <!-- MOBILE TOP NAV -->
-    <div class="mobile-nav">
+    <!-- MOBILE SCROLL NAV -->
+    <div class="mobile-nav" id="mobile-nav">
       <div class="mobile-nav-inner">
-        <button class="mnav-btn on" id="mn-today" onclick="go('today');closeMobileDropdown()">
-          <span class="mnav-icon">📖</span>
-          <span>Hoje</span>
-        </button>
-        <button class="mnav-btn" id="mn-cal" onclick="go('cal');closeMobileDropdown()">
-          <span class="mnav-icon">📅</span>
-          <span>Calendário</span>
-        </button>
-        <button class="mnav-btn" id="mn-diary" onclick="go('diary');closeMobileDropdown()">
-          <span class="mnav-icon">💭</span>
-          <span>Diário</span>
-        </button>
-        <button class="mnav-btn" id="mn-ach" onclick="go('ach');closeMobileDropdown()">
-          <span class="mnav-icon">🏆</span>
-          <span>Conquistas</span>
-        </button>
-        <div class="mnav-more">
-          <button class="mnav-btn" id="mn-more" onclick="toggleMobileDropdown()">
-            <span class="mnav-icon">☰</span>
-            <span>Mais</span>
-          </button>
-          <div class="mnav-dropdown" id="mnav-dropdown">
-            <button class="mnav-drop-item" id="mn-week" onclick="go('week');closeMobileDropdown()">📊 Semana</button>
-            <button class="mnav-drop-item" id="mn-stories" onclick="go('stories');closeMobileDropdown()">✦ Histórias</button>
-            <button class="mnav-drop-item" id="mn-wisdom" onclick="go('wisdom');closeMobileDropdown()">💡 Sabedoria</button>
-            <button class="mnav-drop-item" id="mn-notif" onclick="go('notif');closeMobileDropdown()">🔔 Lembretes</button>
-          </div>
-        </div>
+        <button class="mnav-btn on" id="mn-today" onclick="go('today')"><span class="mnav-icon">📖</span><span>Hoje</span></button>
+        <button class="mnav-btn" id="mn-cal" onclick="go('cal')"><span class="mnav-icon">📅</span><span>Calendário</span></button>
+        <button class="mnav-btn" id="mn-week" onclick="go('week')"><span class="mnav-icon">📊</span><span>Semana</span></button>
+        <button class="mnav-btn" id="mn-diary" onclick="go('diary')"><span class="mnav-icon">💭</span><span>Diário</span></button>
+        <button class="mnav-btn" id="mn-stories" onclick="go('stories')"><span class="mnav-icon">✦</span><span>Histórias</span></button>
+        <button class="mnav-btn" id="mn-wisdom" onclick="go('wisdom')"><span class="mnav-icon">💡</span><span>Sabedoria</span></button>
+        <button class="mnav-btn" id="mn-ach" onclick="go('ach')"><span class="mnav-icon">🏆</span><span>Conquistas</span></button>
+        <button class="mnav-btn" id="mn-notif" onclick="go('notif')"><span class="mnav-icon">🔔</span><span>Lembretes</span></button>
       </div>
     </div>
 
@@ -1195,16 +1172,8 @@ function go(name){
   if(name==='notif')renderNotif();
 }
 
-function toggleMobileDropdown(){
-  document.getElementById('mnav-dropdown').classList.toggle('open');
-}
-function closeMobileDropdown(){
-  document.getElementById('mnav-dropdown').classList.remove('open');
-}
-// Close dropdown when tapping outside
-document.addEventListener('click',function(e){
-  if(!e.target.closest('.mnav-more'))closeMobileDropdown();
-});
+// Mobile nav helpers (kept for compatibility)
+function closeMobileDropdown(){}
 
 function renderStreak(){
   const s=getStreak();
