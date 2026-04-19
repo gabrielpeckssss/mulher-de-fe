@@ -128,10 +128,23 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
 .prog-wrap{margin:16px 40px 0;height:3px;background:rgba(255,255,255,0.1);border-radius:2px}
 .prog-fill{height:100%;background:var(--taupe);border-radius:2px;transition:width .5s}
 .prog-lbl{font-size:11px;color:var(--taupe);margin-top:5px;padding-bottom:18px;letter-spacing:1px}
-.nav{display:flex;gap:8px;padding:16px 22px;background:var(--espresso);overflow-x:auto}
+/* DESKTOP NAV */
+.nav{display:flex;gap:6px;padding:12px 22px;background:var(--espresso);overflow-x:auto;flex-wrap:wrap;justify-content:center}
 .nav::-webkit-scrollbar{display:none}
-.npill{padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:var(--taupe);font-family:'Lato',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:all .2s}
+.npill{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:var(--taupe);font-family:'Lato',sans-serif;font-size:11px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:all .2s}
 .npill.on,.npill:hover{background:var(--accent);color:var(--warm);border-color:var(--accent)}
+
+/* MOBILE BOTTOM NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--espresso);border-top:1px solid rgba(255,255,255,0.1);z-index:100;padding:6px 0 env(safe-area-inset-bottom,6px)}
+.mobile-nav-inner{display:flex;justify-content:space-around;align-items:center}
+.mnav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 8px;background:none;border:none;cursor:pointer;color:var(--taupe);font-family:'Lato',sans-serif;font-size:9px;letter-spacing:.5px;text-transform:uppercase;transition:all .2s;min-width:44px}
+.mnav-btn.on{color:var(--accent)}
+.mnav-icon{font-size:18px;line-height:1}
+.mnav-more{position:relative}
+.mnav-dropdown{display:none;position:fixed;bottom:70px;right:8px;background:var(--espresso);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:8px;z-index:200;min-width:180px}
+.mnav-dropdown.open{display:block}
+.mnav-drop-item{display:flex;align-items:center;gap:10px;padding:10px 14px;color:var(--taupe);font-family:'Lato',sans-serif;font-size:12px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;border-radius:8px;transition:all .2s;background:none;border:none;width:100%}
+.mnav-drop-item:hover,.mnav-drop-item.on{background:rgba(255,255,255,0.08);color:var(--warm)}
 
 .content{padding:22px}
 .screen{display:none}.screen.on{display:block}
@@ -339,11 +352,28 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
 .notif-status{font-size:12px;color:var(--green);margin-top:8px;display:none}
 
 /* RESPONSIVE */
+@media(min-width:769px){
+  .mobile-nav{display:none!important}
+  .wrap{padding-bottom:20px}
+}
 @media(max-width:768px){
   .login-left{display:none}
   .login-right{width:100%;padding:40px 28px}
-  .hdr{padding:20px 20px 0}
-  .content{padding:14px}
+  .hdr{padding:16px 16px 0}
+  .hdr h1{font-size:22px}
+  .hdr-sub{font-size:10px}
+  .content{padding:12px}
+  /* hide desktop nav on mobile */
+  .nav{display:none}
+  /* show mobile nav */
+  .mobile-nav{display:block}
+  /* add bottom padding so content doesnt hide behind nav */
+  .wrap{padding-bottom:80px}
+  /* full width card */
+  .card{border-radius:8px}
+  /* login */
+  .login-right{padding:32px 20px}
+  .lr-title{font-size:22px}
 }
 </style>
 </head>
@@ -453,6 +483,40 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
       <button class="npill" onclick="go('diary')">Diário & Humor</button>
       <button class="npill" onclick="go('ach')">Conquistas</button>
       <button class="npill" onclick="go('notif')">🔔 Lembretes</button>
+    </div>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <div class="mobile-nav">
+      <div class="mobile-nav-inner">
+        <button class="mnav-btn on" id="mn-today" onclick="go('today');closeMobileDropdown()">
+          <span class="mnav-icon">📖</span>
+          <span>Hoje</span>
+        </button>
+        <button class="mnav-btn" id="mn-cal" onclick="go('cal');closeMobileDropdown()">
+          <span class="mnav-icon">📅</span>
+          <span>Calendário</span>
+        </button>
+        <button class="mnav-btn" id="mn-diary" onclick="go('diary');closeMobileDropdown()">
+          <span class="mnav-icon">💭</span>
+          <span>Diário</span>
+        </button>
+        <button class="mnav-btn" id="mn-ach" onclick="go('ach');closeMobileDropdown()">
+          <span class="mnav-icon">🏆</span>
+          <span>Conquistas</span>
+        </button>
+        <div class="mnav-more">
+          <button class="mnav-btn" id="mn-more" onclick="toggleMobileDropdown()">
+            <span class="mnav-icon">☰</span>
+            <span>Mais</span>
+          </button>
+          <div class="mnav-dropdown" id="mnav-dropdown">
+            <button class="mnav-drop-item" id="mn-week" onclick="go('week');closeMobileDropdown()">📊 Semana</button>
+            <button class="mnav-drop-item" id="mn-stories" onclick="go('stories');closeMobileDropdown()">✦ Histórias</button>
+            <button class="mnav-drop-item" id="mn-wisdom" onclick="go('wisdom');closeMobileDropdown()">💡 Sabedoria</button>
+            <button class="mnav-drop-item" id="mn-notif" onclick="go('notif');closeMobileDropdown()">🔔 Lembretes</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- TODAY -->
@@ -1030,6 +1094,10 @@ function go(name){
   document.getElementById('s-'+name).classList.add('on');
   const idx={today:0,cal:1,week:2,stories:3,wisdom:4,diary:5,ach:6,notif:7}[name];
   if(idx!==undefined)document.querySelectorAll('.npill')[idx].classList.add('on');
+  // Update mobile nav
+  document.querySelectorAll('.mnav-btn,.mnav-drop-item').forEach(b=>b.classList.remove('on'));
+  const mob=document.getElementById('mn-'+name);
+  if(mob)mob.classList.add('on');
   if(name==='cal')renderCal();
   if(name==='week')renderWeek();
   if(name==='stories')renderStories();
@@ -1038,6 +1106,17 @@ function go(name){
   if(name==='ach')renderAch();
   if(name==='notif')renderNotif();
 }
+
+function toggleMobileDropdown(){
+  document.getElementById('mnav-dropdown').classList.toggle('open');
+}
+function closeMobileDropdown(){
+  document.getElementById('mnav-dropdown').classList.remove('open');
+}
+// Close dropdown when tapping outside
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.mnav-more'))closeMobileDropdown();
+});
 
 function renderStreak(){
   const s=getStreak();
@@ -1151,6 +1230,17 @@ function renderPastDiary(){
   const past=document.getElementById('past-diary');past.innerHTML='';
   const today=new Date().toISOString().split('T')[0];
   if(diary[today])document.getElementById('diary-input').value=diary[today];
+
+  // Mostra anotação de hoje se existir
+  if(diary[today]){
+    const todayCard=document.createElement('div');
+    todayCard.style.cssText='background:var(--greenl);border:1px solid #A7D7A8;border-radius:8px;padding:12px 16px;margin-top:12px;margin-bottom:6px';
+    const d=new Date(today+'T12:00:00');
+    todayCard.innerHTML=`<div style="font-size:10px;color:var(--green);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">✓ Anotação de hoje salva</div><div style="font-size:14px;color:var(--td);line-height:1.7">${diary[today]}</div>`;
+    past.appendChild(todayCard);
+  }
+
+  // Histórico anterior
   const entries=Object.entries(diary).filter(([k])=>k!==today).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7);
   if(entries.length){
     const h=document.createElement('div');
@@ -1435,4 +1525,4 @@ auth.onAuthStateChanged(async user=>{
 });
 </script>
 </body>
-</html>
+</html>    const formatted=text.split('\n\n').join('</p><p style="margin-top:14px">').split('\n').join('<br>')
