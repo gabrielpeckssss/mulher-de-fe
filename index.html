@@ -378,10 +378,7 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
 
     <div id="error-msg" class="error-msg"></div>
     <div id="success-msg" class="success-msg"></div>
-    <div id="device-warning" class="device-warning">
-      <div class="dw-title">⚠️ Dispositivo não autorizado</div>
-      <div class="dw-text">Sua conta já está associada a outro dispositivo. Por segurança, cada conta só pode ser usada em um aparelho. Entre em contato com o suporte se precisar trocar de dispositivo.</div>
-    </div>
+    <div id="device-warning" class="device-warning" style="display:none"></div>
 
     <!-- LOGIN FORM -->
     <div id="form-login">
@@ -866,9 +863,7 @@ async function doLogin() {
     await checkDevice(cred.user);
   } catch(e) {
     setLoading('login', false);
-    if (e.code === 'DEVICE_BLOCKED') {
-      document.getElementById('device-warning').style.display = 'block';
-    } else {
+    {
       const msgs = {
         'auth/user-not-found': 'E-mail não encontrado.',
         'auth/wrong-password': 'Senha incorreta.',
@@ -918,18 +913,7 @@ function persistSession(user) {
 }
 
 async function checkDevice(user) {
-  const deviceId = getDeviceId();
-  const doc = await db.collection('users').doc(user.uid).get();
-  if (!doc.exists) { await auth.signOut(); showError('Conta não encontrada.'); setLoading('login',false); return; }
-  const data = doc.data();
-  if (data.deviceId && data.deviceId !== deviceId) {
-    await auth.signOut();
-    const err = new Error('Device blocked'); err.code = 'DEVICE_BLOCKED';
-    setLoading('login', false); throw err;
-  }
-  if (!data.deviceId) {
-    await db.collection('users').doc(user.uid).update({ deviceId });
-  }
+  // Device lock removido — acesso livre por conta
   persistSession(user);
   loadApp(user);
 }
