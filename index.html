@@ -1218,7 +1218,13 @@ async function saveDiary(){
   const val=document.getElementById('diary-input').value.trim();
   if(!val) return;
   const today=new Date().toISOString().split('T')[0];
-  diary[today]=val;
+  const time=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  // Support multiple entries per day - diary[date] is now an array
+  if(!diary[today]) diary[today]=[];
+  // If it's a string (old format), convert to array
+  if(typeof diary[today]==='string') diary[today]=[{text:diary[today],time:''}];
+  diary[today].push({text:val,time});
+  document.getElementById('diary-input').value='';
   await saveToFirestore();
   const msg=document.getElementById('diary-saved-msg');
   msg.style.opacity='1';
@@ -1226,34 +1232,69 @@ async function saveDiary(){
   renderPastDiary();
 }
 
+function getEntries(val){
+  // Normalize: string -> [{text,time}], array stays array
+  if(!val) return [];
+  if(typeof val==='string') return [{text:val,time:''}];
+  return val;
+}
+
 function renderPastDiary(){
   const past=document.getElementById('past-diary');past.innerHTML='';
   const today=new Date().toISOString().split('T')[0];
-  if(diary[today])document.getElementById('diary-input').value=diary[today];
 
-  // Mostra anotação de hoje se existir
-  if(diary[today]){
-    const todayCard=document.createElement('div');
-    todayCard.style.cssText='background:var(--greenl);border:1px solid #A7D7A8;border-radius:8px;padding:12px 16px;margin-top:12px;margin-bottom:6px';
-    const d=new Date(today+'T12:00:00');
-    todayCard.innerHTML=`<div style="font-size:10px;color:var(--green);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">✓ Anotação de hoje salva</div><div style="font-size:14px;color:var(--td);line-height:1.7">${diary[today]}</div>`;
-    past.appendChild(todayCard);
+  // Anotações de HOJE
+  const todayEntries=getEntries(diary[today]);
+  if(todayEntries.length){
+    const h=document.createElement('div');
+    h.className='stitle';h.style.cssText='margin-top:12px';h.textContent='Anotações de hoje';
+    past.appendChild(h);
+    todayEntries.slice().reverse().forEach((entry,idx)=>{
+      const c=document.createElement('div');
+      c.style.cssText='background:var(--greenl);border:1px solid #A7D7A8;border-radius:8px;padding:12px 16px;margin-bottom:8px;position:relative';
+      c.innerHTML=`
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:10px;color:var(--green);letter-spacing:1.5px;text-transform:uppercase">✓ Salva${entry.time?' às '+entry.time:''}</span>
+          <button onclick="deleteDiaryEntry('${today}',${todayEntries.length-1-idx})" style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--tl);padding:0">✕</button>
+        </div>
+        <div style="font-size:14px;color:var(--td);line-height:1.7">${entry.text}</div>`;
+      past.appendChild(c);
+    });
   }
 
   // Histórico anterior
-  const entries=Object.entries(diary).filter(([k])=>k!==today).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7);
+  const entries=Object.entries(diary).filter(([k])=>k!==today).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,10);
   if(entries.length){
     const h=document.createElement('div');
     h.className='stitle';h.style.marginTop='16px';h.textContent='Anotações Anteriores';
     past.appendChild(h);
-    entries.forEach(([date,text])=>{
-      const c=document.createElement('div');
-      c.className='card';c.style.cssText='padding:14px;margin-bottom:10px;background:var(--warm)';
+    entries.forEach(([date,val])=>{
+      const dayEntries=getEntries(val);
       const d=new Date(date+'T12:00:00');
-      c.innerHTML=`<div class="clbl" style="margin-bottom:6px">${d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})}</div><div style="font-size:14px;color:var(--tm);line-height:1.7">${text}</div>`;
-      past.appendChild(c);
+      const dateStr=d.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'long'});
+      const wrap=document.createElement('div');
+      wrap.className='card';wrap.style.cssText='padding:14px;margin-bottom:10px;background:var(--warm)';
+      let inner=`<div class="clbl" style="margin-bottom:8px">${dateStr} · ${dayEntries.length} anotação${dayEntries.length>1?'s':''}</div>`;
+      dayEntries.slice().reverse().forEach(entry=>{
+        inner+=`<div style="font-size:14px;color:var(--tm);line-height:1.7;padding:8px 0;border-bottom:1px solid var(--linen)">
+          ${entry.time?`<span style="font-size:11px;color:var(--tl);margin-right:6px">${entry.time}</span>`:''}
+          ${entry.text}
+        </div>`;
+      });
+      wrap.innerHTML=inner;
+      past.appendChild(wrap);
     });
   }
+}
+
+async function deleteDiaryEntry(date, idx){
+  if(!diary[date]) return;
+  const arr=getEntries(diary[date]);
+  arr.splice(idx,1);
+  diary[date]=arr.length>0?arr:undefined;
+  if(!diary[date]) delete diary[date];
+  await saveToFirestore();
+  renderPastDiary();
 }
 
 function renderDiary(){
@@ -1525,4 +1566,4 @@ auth.onAuthStateChanged(async user=>{
 });
 </script>
 </body>
-</html>    const formatted=text.split('\n\n').join('</p><p style="margin-top:14px">').split('\n').join('<br>')
+</html>
