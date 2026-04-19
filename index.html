@@ -134,6 +134,29 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
 .npill{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:var(--taupe);font-family:'Lato',sans-serif;font-size:11px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:all .2s}
 .npill.on,.npill:hover{background:var(--accent);color:var(--warm);border-color:var(--accent)}
 
+/* MOBILE TOP BAR */
+.mobile-topbar{display:none;background:var(--espresso);padding:10px 16px 0;align-items:center;justify-content:space-between}
+.mobile-topbar-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--warm)}
+.mobile-topbar-title em{color:var(--taupe);font-style:italic}
+.mobile-progress-wrap{height:2px;background:rgba(255,255,255,0.1);margin:8px 16px 0;border-radius:2px}
+.mobile-progress-fill{height:100%;background:var(--taupe);border-radius:2px;transition:width .5s}
+.mobile-progress-lbl{font-size:10px;color:var(--taupe);padding:4px 16px 10px;letter-spacing:.5px;display:block}
+
+/* EYE ICON */
+.pass-wrap{position:relative}
+.pass-wrap .form-input{padding-right:44px}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--tl);font-size:16px;padding:4px;line-height:1}
+.eye-btn:hover{color:var(--bark)}
+
+/* MOOD SUCCESS MESSAGE */
+.mood-success{
+  margin:0 22px 16px;padding:14px 18px;
+  background:var(--greenl);border:1px solid #A7D7A8;border-radius:10px;
+  display:none;
+}
+.mood-success-title{font-size:13px;font-weight:700;color:#2D6A2F;margin-bottom:4px}
+.mood-success-sub{font-size:13px;color:#3D7A40;line-height:1.6}
+
 /* MOBILE BOTTOM NAV */
 .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--espresso);border-top:1px solid rgba(255,255,255,0.1);z-index:100;padding:6px 0 env(safe-area-inset-bottom,6px)}
 .mobile-nav-inner{display:flex;justify-content:space-around;align-items:center}
@@ -359,13 +382,13 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
 @media(max-width:768px){
   .login-left{display:none}
   .login-right{width:100%;padding:40px 28px}
-  .hdr{padding:16px 16px 0}
-  .hdr h1{font-size:22px}
-  .hdr-sub{font-size:10px}
   .content{padding:12px}
-  /* hide desktop nav on mobile */
+  /* hide desktop header and nav on mobile */
+  .hdr{display:none}
   .nav{display:none}
-  /* show mobile nav */
+  /* show mobile topbar and nav */
+  .mobile-topbar{display:flex!important}
+  #mobile-prog-wrap,#mobile-plbl{display:block!important}
   .mobile-nav{display:block}
   /* add bottom padding so content doesnt hide behind nav */
   .wrap{padding-bottom:80px}
@@ -418,7 +441,10 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
       </div>
       <div class="form-group">
         <label class="form-label">Senha</label>
-        <input type="password" class="form-input" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        <div class="pass-wrap">
+          <input type="password" class="form-input" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+          <button type="button" class="eye-btn" onclick="togglePass('login-pass',this)">👁</button>
+        </div>
       </div>
       <button class="btn-primary" id="btn-login" onclick="doLogin()">
         <span id="login-txt">Entrar</span>
@@ -441,7 +467,10 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
       </div>
       <div class="form-group">
         <label class="form-label">Senha</label>
-        <input type="password" class="form-input" id="reg-pass" placeholder="Mínimo 6 caracteres">
+        <div class="pass-wrap">
+          <input type="password" class="form-input" id="reg-pass" placeholder="Mínimo 6 caracteres">
+          <button type="button" class="eye-btn" onclick="togglePass('reg-pass',this)">👁</button>
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label">Código de acesso</label>
@@ -463,6 +492,19 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
 <!-- ============================================================ APP SCREEN -->
 <div id="app-screen">
   <div class="wrap">
+    <!-- MOBILE TOP BAR -->
+    <div class="mobile-topbar" id="mobile-topbar">
+      <div>
+        <div class="mobile-topbar-title">Mulher de <em>Fé</em></div>
+        <div style="font-size:10px;color:var(--taupe);letter-spacing:1px" id="mobile-topbar-user"></div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()" style="font-size:10px;padding:4px 10px">Sair</button>
+    </div>
+    <div class="mobile-progress-wrap" id="mobile-prog-wrap" style="display:none">
+      <div class="mobile-progress-fill" id="mobile-pbar" style="width:0%"></div>
+    </div>
+    <span class="mobile-progress-lbl" id="mobile-plbl" style="display:none"></span>
+
     <div class="hdr">
       <div class="hdr-top">
         <span class="hdr-user" id="hdr-user"></span>
@@ -635,7 +677,10 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--cream);colo
           </div>
           <div class="mood-save-row">
             <button class="mood-save" onclick="saveMood()">Salvar como estou</button>
-            <span class="mood-saved-msg" id="mood-saved-msg">✓ Registrado!</span>
+          </div>
+          <div class="mood-success" id="mood-success">
+            <div class="mood-success-title">✓ Avaliação registrada!</div>
+            <div class="mood-success-sub" id="mood-success-sub">Obrigada por compartilhar como você está. Nos vemos domingo para a sua Reflexão da Semana!</div>
           </div>
           <div class="mood-history" id="mood-history"></div>
         </div>
@@ -1058,6 +1103,22 @@ function updateBar(){
   const p=Math.round(done.length/365*100);
   document.getElementById('pbar').style.width=p+'%';
   document.getElementById('plbl').textContent=done.length+' de 365 dias concluídos — '+p+'%';
+  // Mobile bar
+  const mpbar=document.getElementById('mobile-pbar');
+  const mplbl=document.getElementById('mobile-plbl');
+  if(mpbar) mpbar.style.width=p+'%';
+  if(mplbl) mplbl.textContent=done.length+' de 365 dias — '+p+'%';
+}
+
+function togglePass(id, btn){
+  const input=document.getElementById(id);
+  if(input.type==='password'){
+    input.type='text';
+    btn.textContent='🙈';
+  } else {
+    input.type='password';
+    btn.textContent='👁';
+  }
 }
 
 async function saveToFirestore(){
@@ -1338,9 +1399,25 @@ async function saveMood(){
   if(!text&&!emojiLabel)return;
   mood[today]={emoji:emojiLabel,text,date:today};
   await saveToFirestore();
-  const msg=document.getElementById('mood-saved-msg');
-  msg.style.opacity='1';
-  setTimeout(()=>msg.style.opacity='0',2000);
+
+  // Clear fields
+  document.getElementById('mood-input').value='';
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));
+
+  // Show success message with next Sunday
+  const now=new Date();
+  const daysUntilSun=(7-now.getDay())%7||7;
+  const nextSun=new Date(now);
+  nextSun.setDate(now.getDate()+daysUntilSun);
+  const sunStr=nextSun.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+  const successEl=document.getElementById('mood-success');
+  const subEl=document.getElementById('mood-success-sub');
+  subEl.textContent='Obrigada por compartilhar como você está. '+
+    (daysUntilSun===7?'Este domingo':'No domingo, dia '+nextSun.getDate())+
+    ' você receberá sua Reflexão da Semana personalizada. 🌿';
+  successEl.style.display='block';
+  setTimeout(()=>successEl.style.display='none', 5000);
+
   renderMoodHistory();
 }
 
@@ -1531,6 +1608,8 @@ async function loadApp(user){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
   document.getElementById('hdr-user').textContent=user.displayName||user.email;
+  const mtu=document.getElementById('mobile-topbar-user');
+  if(mtu)mtu.textContent=user.displayName||user.email;
   try{
     const doc=await db.collection('users').doc(user.uid).get();
     if(doc.exists){
